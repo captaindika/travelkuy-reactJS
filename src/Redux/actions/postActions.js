@@ -2,20 +2,20 @@ import { FETCH_POSTS, NEW_POST, FETCH_DUMMY } from './types'
 import axios from 'axios'
 
 export const fetchPosts = () => dispatch => {
-  // console.log('fetch')
-  // fetch('https://jsonplaceholder.typicode.com/posts')
-  fetch('http://localhost:3030/user/schedule')
-  .then(res => res.json())
-  .then(posts => 
-    dispatch({
-    type: FETCH_POSTS,
-    payload: posts
-    })
-  ) 
+  return axios.get('http://localhost:3030/user/schedule')
+      .then(posts => {
+        dispatch({
+          type: FETCH_POSTS,
+          payload: posts
+        })
+      })
+      .catch(error => {
+        throw(error);
+      })
 }
 
 // export const fetchDummy = () => dispatch => {
-//   fetch ('https://jsonplaceholder.typicode.com/posts')
+//   fetch ('http://localhost:3030/user/schedule')
 //   .then(res => res.json())
 //   .then(dummy => 
 //     dispatch({
@@ -38,7 +38,6 @@ export const fetchDummy = () => dispatch => {
   }
 
 export const createPost = (postData) => dispatch => {
-  console.log('success')
   fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
       headers: {
