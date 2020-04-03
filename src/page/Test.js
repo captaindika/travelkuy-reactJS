@@ -37,7 +37,10 @@ class TestPost extends Component {
 
 TestPost.propTypes = {
   fetchPosts: propTypes.func.isRequired,
+  fetchDummy: propTypes.func.isRequired,
   data: propTypes.array.isRequired,
+  data1: propTypes.array.isRequired
+  
 }
 
 const mapStateToProps = state => ({
