@@ -12,7 +12,6 @@ class PostForm extends Component {
       body: ''
     }
 
-    this.props.createPost()
 
   this.onChange = this.onChange.bind(this)
   this.onSubmit = this.onSubmit.bind(this)
@@ -24,6 +23,7 @@ class PostForm extends Component {
 
   onSubmit(e){
     e.preventDefault()
+
     const post = {
       title: this.state.title,
       body: this.state.body
