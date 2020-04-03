@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import Footer from './component/Footer'
+import Login from './page/Login'
+import Bus from './page/Bus'
+import Routes from './page/Route'
+import Schedule from './page/Schedule'
+import Dashboard from './page/Dashboard'
+import {BrowserRouter, Router, Switch, Route} from 'react-router-dom'
+import history from './utils/History'
+import Notfound from './page/Notfound'
+// for testing redux
+import TestPost from './page/Test'
+import PostForm from './page/PostForm'
+import {Provider} from 'react-redux'
+import store from './Redux/store'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <>
+      <Provider store={store}>
+        <PostForm/>
+        <hr/>
+        <TestPost/>
+      </Provider>
+      {/* <BrowserRouter>
+        <Router history={history}>
+          <Switch>
+            <Route path='/' exact component={Login}/>
+            <Route path='/dashboard' exact render={(props) => <Dashboard {...props}/>}/>
+            <Route path='/car' exact render={(props) => <Bus {...props}/>}/>
+            <Route path='/route' exact render={(props) => <Routes {...props}/>}/>
+            <Route path='/schedule' exact render={(props) => <Schedule {...props}/>}/>
+            <Route component={Notfound}/>
+           </Switch>
+         </Router>
+       </BrowserRouter>       
+        <Footer/> */}
+      </>
+    )
+  }
 }
-
-export default App;
