@@ -1,4 +1,5 @@
 import { FETCH_POSTS, NEW_POST, FETCH_DUMMY } from './types'
+import axios from 'axios'
 
 export const fetchPosts = () => dispatch => {
   // console.log('fetch')
@@ -13,15 +14,28 @@ export const fetchPosts = () => dispatch => {
   ) 
 }
 
+// export const fetchDummy = () => dispatch => {
+//   fetch ('https://jsonplaceholder.typicode.com/posts')
+//   .then(res => res.json())
+//   .then(dummy => 
+//     dispatch({
+//       type: FETCH_DUMMY,
+//       payload: dummy
+//     }))
+// }
+
 export const fetchDummy = () => dispatch => {
-  fetch ('https://jsonplaceholder.typicode.com/posts')
-  .then(res => res.json())
-  .then(dummy => 
-    dispatch({
-      type: FETCH_DUMMY,
-      payload: dummy
-    }))
-}
+    return axios.get('https://jsonplaceholder.typicode.com/posts')
+      .then(dummy => {
+        dispatch({
+          type: FETCH_DUMMY,
+          payload: dummy
+        })
+      })
+      .catch(error => {
+        throw(error);
+      })
+  }
 
 export const createPost = (postData) => dispatch => {
   console.log('success')
