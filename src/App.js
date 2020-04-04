@@ -9,8 +9,6 @@ import {BrowserRouter, Router, Switch, Route} from 'react-router-dom'
 import history from './utils/History'
 import Notfound from './page/Notfound'
 // for testing redux
-import TestPost from './page/Test'
-import PostForm from './page/PostForm'
 import {Provider} from 'react-redux'
 import store from './Redux/store'
 
@@ -18,10 +16,8 @@ export default class App extends Component {
   render() {
     return (
       <>
-      <Provider store={store}>
-        <PostForm/>
-        <hr/>
-        <TestPost/>
+      <Provider store={store().store}>
+        <Login/>
       </Provider>
       {/* <BrowserRouter>
         <Router history={history}>

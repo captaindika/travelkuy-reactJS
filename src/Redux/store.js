@@ -1,19 +1,32 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware } from 'redux'
+import promiseMiddleware from 'redux-promise-middleware'
+import storage from 'redux-persist/lib/storage'
+import logger from 'redux-logger'
+import {persistStore, persistReducer} from 'redux-persist'
 import thunk from 'redux-thunk'
-import combineReducers from './reducers/Index'
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
 import {composeWithDevTools} from 'redux-devtools-extension'
+import reducer from './reducers'
 
-const initialState = {}
-const middleware = [thunk]
 
-const store = createStore(
-    combineReducers,
-    initialState,
-    composeWithDevTools( // here is for redux extension chrome
-    applyMiddleware(...middleware)
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
+const persistConfig = {
+  key: 'admin',
+  storage,
+  stateReconciler: hardSet,
+  timeOut: null
+}
+
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+export default () => {
+  const store = createStore(
+    persistedReducer,
+    composeWithDevTools(applyMiddleware(
+      promiseMiddleware,
+      logger,
+      thunk
+    )),
   )
-
-
-export default store
+  const persistor = persistStore(store)
+  return { store, persistor}
+}

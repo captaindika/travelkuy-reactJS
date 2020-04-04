@@ -1,8 +1,10 @@
-import {combineReducers} from 'redux'
-import postReducer from './postReducer'
+import isLogin from './isLogin'
+import { combineReducers } from 'redux'
+import Busses from './Admin/Busses'
+import Routes from './Admin/Routes'
 
-
-export default combineReducers({
-  posts: postReducer
-
+const allReducers = combineReducers({
+  isLogin, Busses, Routes
 })
+
+export default allReducers
