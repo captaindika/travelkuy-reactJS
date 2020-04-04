@@ -1,3 +1,4 @@
+// styling
 import React, { Component } from 'react'
 import Navbar from '../component/Navbar'
 import {Container, Col, Table, Form,
@@ -5,6 +6,10 @@ import {Container, Col, Table, Form,
 import styled from 'styled-components'
 import {IoMdAddCircle} from 'react-icons/io'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
+
+// redux
+import {getBus} from '../Redux/actions/admin/Buss'
+import {connect} from 'react-redux'
 
 const Label1 = styled(Label)`
 font-weight: bold;
@@ -23,14 +28,24 @@ const CustomTable = styled(Table)`
 font-weight: bold;
 text-align: center;
 `
+const Content = styled(Container)`
+display: flex;
+justify-content: center;
+margin-top: 20px;
+`
+const CustomTD = styled('td')`
+text-align: left;`
 
-
-export default class Bus extends Component {
+class Bus extends Component {
+  componentDidMount() {
+    this.props.getBus()
+    
+  }
   render() {
     return (
       <>
       <Navbar/>
-        <Container>
+        <Content>
             <Cols md={12}>
                 <Form>
                   <FormGroup row>
@@ -43,35 +58,46 @@ export default class Bus extends Component {
                 <CustomTable>
                   <thead>
                     <th>No</th>
-                    <th>Agent's name</th>
                     <th>Car's name</th>
                     <th>Seat</th>
                     <th>Option</th>
                   </thead>
                   <tbody>
-
+                  { this.props.Bus.data.data && this.props.Bus.data.data.map((v,i)=>{
+                      return (
+                        <tr>
+                          <th scope='row' key = { i }>{ i + 1} </th>
+                          <td>{v.car_name}</td>
+                          <td>{v.bus_seat}</td>
+                          <td>
+                              <Icons><FaPencilAlt/></Icons>
+                              <Icons><FaTrash/></Icons>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
                   </tbody>
                   <tbody>
                   <tr>
-                    <th scope="row">1</th>
-                    <td>Toyo</td>
-                    <td>Tayo</td>
-                    <td>6</td>
-                    <td>
-                      <Icons><FaPencilAlt/></Icons>
-                      <Icons><FaTrash/></Icons>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan={5}>
-                      <span><IoMdAddCircle size={30} color='black'/><b>Add Car</b></span>
-                    </td>
+                    <CustomTD colspan={5}>
+                      <span class='text-left'><IoMdAddCircle size={30} color='black'/><b>Add Car</b></span>
+                    </CustomTD>
                   </tr>
                   </tbody>
                 </CustomTable>
             </Cols>
-        </Container>
+        </Content>
       </>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    Bus: state.Busses
+  }
+}
+
+const mapDispatchToProps = {getBus}
+export default connect(mapStateToProps, mapDispatchToProps)(Bus)

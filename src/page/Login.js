@@ -5,6 +5,7 @@ import axios from 'axios'
 import Config from '../utils/Config'
 import setLogin from '../Redux/actions/isLogin'
 import {connect} from 'react-redux'
+import image from '../image/beach-blue-car-combi-386025.jpg'
 
 const Column = styled(Col)`
 background-color: #85A9BB;
@@ -22,9 +23,15 @@ color: #EEEEEB`
 
 const Content = styled(Container)`
 display: flex;
-flex-direction: row-reverse;
 align-items: center;
 height: 70%;
+`
+const Background = styled('div')`
+    background-image: url(${image});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
 `
 
 const Login = (props) => {
@@ -63,6 +70,7 @@ const Login = (props) => {
   
     return (
       <>
+      <Background>
         <Content>
             <Column md={4}>
               <Form onSubmit={onLogin}>
@@ -78,6 +86,7 @@ const Login = (props) => {
               </Form>
             </Column>
         </Content>
+      </Background>
       </>
     )
   }

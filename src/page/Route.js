@@ -7,6 +7,9 @@ import {FaPencilAlt, FaTrash} from 'react-icons/fa'
 import Navbar from '../component/Navbar'
 import Footer from '../component/Footer'
 
+import {showRoutes} from '../Redux/actions/admin/Route'
+import {connect} from 'react-redux'
+
 const Content = styled(Container)`
 display: flex;
 justify-content: center;
@@ -30,7 +33,10 @@ const Label1 = styled(Label)`
 font-weight: bold;
 `
 
-export default class Routes extends Component {
+class Routes extends Component {
+  componentDidMount() {
+    this.props.showRoutes()
+  }
   render() {
     return (
       <>
@@ -53,24 +59,20 @@ export default class Routes extends Component {
                     <th>Options</th>
                   </thead>
                   <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Jakarta</td>
-                    <td>Bogor</td>
-                    <td>
-                      <Icons><FaPencilAlt/></Icons>
-                      <Icons><FaTrash/></Icons>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jakarta</td>
-                    <td>Bandung</td>
-                    <td>
-                      <Icons><FaPencilAlt/></Icons>
-                      <Icons><FaTrash/></Icons>
-                    </td>
-                  </tr>
+                    { this.props.Route.data.data && this.props.Route.data.data.map((v,i)=>{
+                        return (
+                          <tr>
+                            <th scope='row' key = { i }>{ i + 1} </th>
+                            <td>{v.start}</td>
+                            <td>{v.end}</td>
+                            <td>
+                              <Icons><FaPencilAlt/></Icons>
+                              <Icons><FaTrash/></Icons>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }                  
                   <RowAdd>
                     <td colspan={4}>
                       <span><MdAddCircle size={30}/>Add Route</span>
@@ -85,3 +87,11 @@ export default class Routes extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    Route: state.Routes
+  }
+}
+const mapDispatchToProps = {showRoutes}
+export default connect(mapStateToProps, mapDispatchToProps) (Routes)

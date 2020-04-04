@@ -6,6 +6,9 @@ import {MdAddCircle} from 'react-icons/md'
 import {FaPencilAlt,FaTrash} from 'react-icons/fa'
 import Navbar from '../component/Navbar'
 
+import {connect} from 'react-redux'
+import {showSchedule} from '../Redux/actions/admin/Schedule'
+
 
 const Label1 = styled(Label)`
 font-weight: bold;`
@@ -22,7 +25,10 @@ font-weight: bold;
 const Content = styled(Container)`
 margin-top: 30px;`
 
-export default class Schedule extends Component {
+class Schedule extends Component {
+  componentDidMount() {
+    this.props.showSchedule()
+  }
   render() {
     return (
       <>
@@ -40,47 +46,33 @@ export default class Schedule extends Component {
                 <Tablemid>
                   <thead>
                     <th>No</th>
-                    <th>From</th>
-                    <th>Destination</th>
-                    <th>Quota</th>
-                    <th>Car's name</th>
+                    <th>Id Bus</th>
+                    <th>Id Route</th>
                     <th>Price</th>
-                    <th>Departure time</th>
-                    <th>Arrival time</th>
-                    <th>Date</th>
+                    <th>Departure Time</th>
+                    <th>Arrive Time</th>
+                    <th>Departure Date</th>
                     <th>Options</th>
                   </thead>
                   <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Jakarta</td>
-                    <td>Bogor</td>
-                    <td>5</td>
-                    <td>Tayo</td>
-                    <td>100.000</td>
-                    <td>10:00</td>
-                    <td>12:00</td>
-                    <td>1 April 2020</td>
-                    <td>
-                      <Icons><FaPencilAlt/></Icons>
-                      <Icons><FaTrash/></Icons>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jakarta</td>
-                    <td>Bandung</td>
-                    <td>5</td>
-                    <td>Tayo-tayo</td>
-                    <td>100.000</td>
-                    <td>06:00</td>
-                    <td>10:00</td>
-                    <td>1 April 2020</td>
-                    <td>
-                      <Icons><FaPencilAlt/></Icons>
-                      <Icons><FaTrash/></Icons>
-                    </td>
-                  </tr>
+                  { this.props.Schedule.data.data && this.props.Schedule.data.data.map((v,i)=>{
+                        return (
+                          <tr>
+                            <th scope='row' key = { i }>{ i + 1} </th>
+                            <td>{v.id_bus}</td>
+                            <td>{v.id_route}</td>
+                            <td>{v.price}</td>
+                            <td>{v.departure_time}</td>
+                            <td>{v.arrive_time}</td>
+                            <td>{v.departure_date}</td>
+                            <td>
+                              <Icons><FaPencilAlt/></Icons>
+                              <Icons><FaTrash/></Icons>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }                  
                   <tr>
                     <td colspan={10}>
                       <span><MdAddCircle size={30}/>Add Schedule</span>
@@ -94,3 +86,11 @@ export default class Schedule extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    Schedule: state.Schedules
+  }
+}
+const mapDispatchToProps = {showSchedule}
+export default connect(mapStateToProps, mapDispatchToProps) (Schedule)

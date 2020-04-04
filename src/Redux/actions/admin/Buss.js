@@ -16,3 +16,16 @@ export const GetDataAgent = () => async dispatch => {
     console.log(error)
   }
 }
+
+export const getBus = ()=> async dispatch => {
+  const endPoint = Config.APP_BACKEND.concat('admin/bus')
+  try {
+    const res = await axios.get(endPoint)
+    dispatch({
+      type : 'GET_BUSSES',
+      payload : res.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
