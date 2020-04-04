@@ -1,15 +1,15 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from 'redux-thunk'
-import rootReducer from './reducers/Index'
+import combineReducers from './reducers/Index'
 import {composeWithDevTools} from 'redux-devtools-extension'
 
 const initialState = {}
 const middleware = [thunk]
 
 const store = createStore(
-    rootReducer,
+    combineReducers,
     initialState,
-    composeWithDevTools(
+    composeWithDevTools( // here is for redux extension chrome
     applyMiddleware(...middleware)
     // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )

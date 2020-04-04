@@ -1,3 +1,4 @@
 export const FETCH_POSTS = 'FETCH_POSTS'
 export const NEW_POST = 'NEW_POST'
 export const FETCH_DUMMY = 'FETCH_DUMMY'
+export const ADD_POST = 'ADD_POST'

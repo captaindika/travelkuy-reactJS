@@ -5,51 +5,83 @@ import {createPost} from '../Redux/actions/postActions'
 
 
 class PostForm extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      title: '',
-      body: ''
+  state = {
+    name: '',
+    age: 0,
+    salary: 0
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const data = {
+      name: this.state.name,
+      age: this.state.age,
+      salary: this.state.salary
     }
-
-
-  this.onChange = this.onChange.bind(this)
-  this.onSubmit = this.onSubmit.bind(this)
+    // if (this.state.name && this.state.age && this.state.salary) {
+      this.props.createPost(data);
+      this.handleReset();
+      console.log(data.name, data.age, data.salary)
+      this.props.
+      console.log(this.props.posts)
+    // }
   }
 
-  onChange(e) {
-      this.setState({ [e.target.name]: e.target.value })
-  }
-
-  onSubmit(e){
-    e.preventDefault()
-
-    const post = {
-      title: this.state.title,
-      body: this.state.body
-    }
-    this.props.createPost(post)
-  }
+  handleReset = () => {
+    this.setState({
+      name: '',
+      age: 0,
+      salary: 0
+    });
+  };
 
   render() {
     return (
       <>
-      <div>
-        <h1>Post</h1>
-        <form onSubmit={this.onSubmit}>
-          <div>
-            <label>Title: </label>
-            <br />
-            <input type='text' placeholder='enter' name='title' onChange={this.onChange} value={this.state.title}/>
+       <div>
+          <form onSubmit={ this.handleSubmit }>
+          <div className="form-group">
+              <input
+              type="text"
+              placeholder="Name"
+              className="form-control"
+              name="name"
+              onChange={ this.handleInputChange }
+              value={ this.state.name }
+            />
           </div>
-          <br/>
-          <div>
-            <label>Body: </label>
-            <br />
-            <textarea name='body' onChange={this.onChange} value={this.state.body}/>
+          <div className="form-group">
+            <input
+                type="number"
+                placeholder="Age"
+                className="form-control"
+                name="age"
+                onChange={ this.handleInputChange }
+                value={ this.state.age }
+              />
           </div>
-          <br/>
-          <button type='submit'>Submit</button>
+          <div>
+            <input
+                type="number"
+                placeholder="Salary"
+                className="form-control"
+                name="salary"
+                onChange={ this.handleInputChange }
+                value={ this.state.salary }
+              />
+          </div>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary">Add Post</button>
+            <button type="button" className="btn btn-warning" onClick={ this.handleReset }>
+              Reset
+            </button>
+          </div>
         </form>
       </div>
       </>
@@ -57,8 +89,16 @@ class PostForm extends Component {
   }
 }
 
-PostForm.propTypes = {
-  createPost: propTypes.func.isRequired
-}
 
-export default connect(null, { createPost })(PostForm)
+const mapStateToProps = state => {
+  return {
+    posts : state.posts
+    }
+  }
+
+export default connect(
+  mapStateToProps, {createPost}
+  
+)(PostForm);
+
+// export default connect(null, { createPost })(PostForm)
