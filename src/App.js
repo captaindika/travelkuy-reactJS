@@ -16,22 +16,6 @@ import {Provider} from 'react-redux'
 import store from './Redux/store'
 
 export default class App extends Component {
-  // constructor(props){
-  //   super(props)
-  //   this.state = {
-  //     isLogin: false
-  //   }
-  //   this.checkLogin = () => {
-  //     if(localStorage.getItem('token')){
-  //       this.setState({isLogin: true})
-  //     }else{
-  //       this.setState({isLogin: false})
-  //     }
-  //   }
-  // }
-  // componentDidMount(){
-  //   this.checkLogin()
-  // }
   render() {
     return (
       <>

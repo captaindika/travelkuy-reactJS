@@ -1,14 +1,14 @@
 // styling
 import React, { Component } from 'react'
 import Navbar from '../component/Navbar'
-import {Container, Col, Table, Form,
+import {Container, Col, Table, Form, Button,
    FormGroup, Input, Label} from 'reactstrap'
 import styled from 'styled-components'
 import {IoMdAddCircle} from 'react-icons/io'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
 
 // redux
-import {getBus} from '../Redux/actions/admin/Buss'
+import {getBus, deleteBus} from '../Redux/actions/admin/Buss'
 import {connect} from 'react-redux'
 
 const Label1 = styled(Label)`
@@ -19,6 +19,7 @@ const Icons = styled.span`
 display: inline;
 width: 100px;
 padding: 5px;
+cursor: pointer;
 `
 
 const Cols = styled(Col)`
@@ -39,8 +40,9 @@ text-align: left;`
 class Bus extends Component {
   componentDidMount() {
     this.props.getBus()
-    
+    this.props.deleteBus(this.props.id)
   }
+  
   render() {
     return (
       <>
@@ -71,7 +73,7 @@ class Bus extends Component {
                           <td>{v.bus_seat}</td>
                           <td>
                               <Icons><FaPencilAlt/></Icons>
-                              <Icons><FaTrash/></Icons>
+                              <Icons onClick={() => this.props.deleteBus(v.id)}><FaTrash /></Icons>
                           </td>
                         </tr>
                       )
@@ -88,6 +90,7 @@ class Bus extends Component {
                 </CustomTable>
             </Cols>
         </Content>
+        
       </>
     )
   }
@@ -99,5 +102,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {getBus}
+const mapDispatchToProps = {getBus, deleteBus}
 export default connect(mapStateToProps, mapDispatchToProps)(Bus)

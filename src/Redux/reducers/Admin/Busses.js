@@ -11,6 +11,12 @@ export default function Busses(state= initState, action) {
         isLoading: false,
         data: action.payload
       }
+    case 'GET_TOTALBUSSES':
+      return {
+        ...state,
+        isLoading: false,
+        data: action.payload
+      }
     case 'EDIT_BUSSES':
       return {
         ...state,

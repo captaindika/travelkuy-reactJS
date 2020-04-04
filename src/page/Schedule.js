@@ -64,7 +64,7 @@ class Schedule extends Component {
                             <td>{v.price}</td>
                             <td>{v.departure_time}</td>
                             <td>{v.arrive_time}</td>
-                            <td>{v.departure_date}</td>
+                            <td>{v.departure_date.slice(0,10)}</td>
                             <td>
                               <Icons><FaPencilAlt/></Icons>
                               <Icons><FaTrash/></Icons>

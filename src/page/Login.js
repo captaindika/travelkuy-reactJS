@@ -6,6 +6,7 @@ import Config from '../utils/Config'
 import setLogin from '../Redux/actions/isLogin'
 import {connect} from 'react-redux'
 import image from '../image/beach-blue-car-combi-386025.jpg'
+import history from '../utils/History'
 
 const Column = styled(Col)`
 background-color: #85A9BB;
@@ -55,10 +56,12 @@ const Login = (props) => {
     username,
     password
   }
+  console.log(localStorage.getItem('token'))
   const infoLogin = await axios.post(endPoint, params)
     if (infoLogin.data.success === true) {
       localStorage.setItem('token', infoLogin.data.token)
       alert('Login success...')
+      history.push('/dashboard')
       setIsLogin({
         isLogin : !isLogin
       })
@@ -66,6 +69,11 @@ const Login = (props) => {
       alert('istigfar kamu mas ...')
       console.log(infoLogin)
     }
+    // if (localStorage.getItem('token') == true) {
+    //   history.push('/dashboard')
+    // } else {
+    //   history.push('/')
+    // }
   }
   
     return (
