@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Container, Col, Form, FormGroup, Label, Input, Button} from 'reactstrap'
 import axios from 'axios'
 import Config from '../utils/Config'
-import setLogin from '../Redux/actions/isLogin'
+import {setLogin} from '../Redux/actions/isLogin'
 import {connect} from 'react-redux'
 import image from '../image/beach-blue-car-combi-386025.jpg'
 import history from '../utils/History'
@@ -39,8 +39,6 @@ const Login = (props) => {
   
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [isLogin, setIsLogin] = useState(false)
-  
 
   const submitUsername = (e) => {
     setUsername(e.target.value)
@@ -51,31 +49,8 @@ const Login = (props) => {
   
   const onLogin = async (e) => {
     e.preventDefault()
-    const endPoint = Config.APP_BACKEND.concat('admin/login')
-    const params = {
-    username,
-    password
-  }
-  console.log(localStorage.getItem('token'))
-  const infoLogin = await axios.post(endPoint, params)
-    if (infoLogin.data.success === true) {
-      localStorage.setItem('token', infoLogin.data.token)
-      alert('Login success...')
-      history.push('/dashboard')
-      setIsLogin({
-        isLogin : !isLogin
-      })
-    } else {
-      alert('istigfar kamu mas ...')
-      console.log(infoLogin)
-    }
-    // if (localStorage.getItem('token') == true) {
-    //   history.push('/dashboard')
-    // } else {
-    //   history.push('/')
-    // }
-  }
-  
+    props.setLogin(username, password)
+  }  
     return (
       <>
       <Background>

@@ -5,13 +5,13 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
 
 
 export const GetDataAgent = () => async dispatch => {
+  const res = await axios.get(Config.APP_BACKEND.concat('admin/agent'))
   try {
-    const res = await axios.get(Config.APP_BACKEND.concat('admin/agent'))
-
     dispatch({
       type: 'GET_AGENT',
       payload: res.data
     })
+    // console.log('Agent: ', res)
   } catch (error) {
     console.log(error)
   }

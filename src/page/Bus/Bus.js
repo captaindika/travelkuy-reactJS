@@ -1,14 +1,15 @@
 // styling
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import Navbar from '../../component/Navbar'
 import {Container, Col, Table, Form, Button,
-   FormGroup, Input, Label} from 'reactstrap'
+   FormGroup, Input, Label, ModalHeader, ModalBody, Modal, ModalFooter} from 'reactstrap'
 import styled from 'styled-components'
 import {IoMdAddCircle} from 'react-icons/io'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
 
 // redux
 import {getBus, deleteBus} from '../../Redux/actions/admin/Buss'
+import {GetDataAgent} from '../../Redux/actions/admin/Agent'
 import {connect} from 'react-redux'
 
 const Label1 = styled(Label)`
@@ -37,10 +38,25 @@ margin-top: 20px;
 const CustomTD = styled('td')`
 text-align: left;`
 
+
 class Bus extends Component {
-  componentDidMount() {
-    this.props.getBus()
-    this.props.deleteBus(this.props.id)
+   async componentDidMount() {
+     try {
+       await this.props.getBus()
+        await this.props.deleteBus(this.props.id)
+        await this.props.GetDataAgent()
+        console.log('asdasdasdasdasdasdsad')
+        console.log('ini agent',this.props.Agent)
+     } catch (err) {
+        console.log(err)
+     }
+  }
+  constructor(props) {
+    super(props)
+    this.state = {
+      modal: false,
+    }
+    this.toggle = () => this.setState({modal: !this.state.modal })
   }
   
   render() {
@@ -72,7 +88,7 @@ class Bus extends Component {
                           <td>{v.car_name}</td>
                           <td>{v.bus_seat}</td>
                           <td>
-                              <Icons><FaPencilAlt/></Icons>
+                              <Icons onClick={this.toggle}><FaPencilAlt/></Icons>
                               <Icons onClick={() => this.props.deleteBus(v.id)}><FaTrash /></Icons>
                           </td>
                         </tr>
@@ -89,6 +105,28 @@ class Bus extends Component {
                   </tbody>
                 </CustomTable>
             </Cols>
+            <div>
+              {/* <Button color="danger" onClick={this.toggle}>Modal</Button> */}
+              <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
+                <ModalHeader toggle={this.toggle}>Add Bus</ModalHeader>
+                <ModalBody>
+                  <FormGroup>
+                    <Label for='agent'>Agent's name</Label>
+                    <Input type='select' name='agent' id='agent'>
+                      {this.props.Agent.data.data && this.props.Agent.data.data.map((v,i) => {
+                        return (
+                          <option>{v.name}</option>
+                        )
+                      })}
+                    </Input>
+                  </FormGroup>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="primary" onClick={this.toggle}>Add</Button>{' '}
+                  <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                </ModalFooter>
+              </Modal>
+            </div>
         </Content>
         
       </>
@@ -98,9 +136,10 @@ class Bus extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    Bus: state.Busses
+    Bus: state.Busses,
+    Agent: state.Agent
   }
 }
 
-const mapDispatchToProps = {getBus, deleteBus}
+const mapDispatchToProps = {getBus, deleteBus, GetDataAgent}
 export default connect(mapStateToProps, mapDispatchToProps)(Bus)

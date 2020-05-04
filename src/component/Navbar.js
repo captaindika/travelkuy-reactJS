@@ -17,6 +17,9 @@ import {AiOutlineTransaction} from 'react-icons/ai'
 import {FaCarAlt, FaRoute} from 'react-icons/fa'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {setLogout} from '../Redux/actions/isLogin'
+
 
 const Navitem = styled(NavItem)`
 display: flex;
@@ -46,8 +49,12 @@ padding: 5px;
 const CustomLink = styled(Link)`
 color: black;`
 
-
-export default class Navbar extends Component {
+const mapStateToProps = (state) => {
+  return {
+    Login: state.isLogin
+  }
+}
+export default connect(mapStateToProps, {setLogout})(class Navbar extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -57,7 +64,12 @@ export default class Navbar extends Component {
       this.setState({isOpen: true})
     }
   }
+
+  logout = () => {
+    this.props.setLogout()
+  }
   render() {
+    // console.log('seeeeeeeeeeeeee',this.props)
     return (
       <>
         <Navibar color="dark" light expand="md">
@@ -106,8 +118,9 @@ export default class Navbar extends Component {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <Navitem>
-                <MdAccountCircle size={32} />
+          <Navitem 
+            style={{cursor: 'pointer'}}>
+                <MdAccountCircle size={32} onClick={this.logout}/>
           </Navitem>
         </Collapse>
       </Navibar>
@@ -115,3 +128,4 @@ export default class Navbar extends Component {
     )
   }
 }
+)
