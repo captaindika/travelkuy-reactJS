@@ -1,6 +1,6 @@
 // styling
 import React, { Component } from 'react'
-import Navbar from '../component/Navbar'
+import Navbar from '../../component/Navbar'
 import {Container, Col, Table, Form, Button,
    FormGroup, Input, Label} from 'reactstrap'
 import styled from 'styled-components'
@@ -8,7 +8,7 @@ import {IoMdAddCircle} from 'react-icons/io'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
 
 // redux
-import {getBus, deleteBus} from '../Redux/actions/admin/Buss'
+import {getBus, deleteBus} from '../../Redux/actions/admin/Buss'
 import {connect} from 'react-redux'
 
 const Label1 = styled(Label)`

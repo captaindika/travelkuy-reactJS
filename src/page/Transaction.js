@@ -7,8 +7,7 @@ import {FaPencilAlt,FaTrash} from 'react-icons/fa'
 import Navbar from '../component/Navbar'
 
 import {connect} from 'react-redux'
-import {showSchedule} from '../Redux/actions/admin/Schedule'
-
+import {getTrans} from '../Redux/actions/admin/Transactions'
 
 const Label1 = styled(Label)`
 font-weight: bold;`
@@ -25,9 +24,10 @@ font-weight: bold;
 const Content = styled(Container)`
 margin-top: 30px;`
 
-class Schedule extends Component {
+class Transaction extends Component {
   componentDidMount() {
-    this.props.showSchedule()
+    this.props.getTrans()
+    console.log('ini transaction', this.props.Transaction)
   }
   render() {
     return (
@@ -46,40 +46,32 @@ class Schedule extends Component {
                 <Tablemid>
                   <thead>
                     <th>No</th>
+                    <th>Id Transaction</th>
+                    <th>Id User</th>
                     <th>Id Schedule</th>
-                    <th>Price</th>
-                    <th>Departure Time</th>
-                    <th>Arrive Time</th>
-                    <th>Departure Date</th>
-                    <th>Start</th>
-                    <th>Destination</th>
-                    <th>Bus Seat</th>
-                    <th>Options</th>
+                    <th>Created At</th>
+                    {/* <th>Options</th> */}
                   </thead>
                   <tbody>
-                  { this.props.Schedule.data.data && this.props.Schedule.data.data.map((v,i)=>{
+                  { this.props.Transaction.data.data && this.props.Transaction.data.data.map((v,i)=>{
                         return (
                           <tr>
                             <th scope='row' key = { i }>{ i + 1} </th>
                             <td>{v.id}</td>
-                            <td>{v.price}</td>
-                            <td>{v.departure_time}</td>
-                            <td>{v.arrive_time}</td>
-                            <td>{v.departure_date.slice(0,10)}</td>
-                            <td>{v.start}</td>
-                            <td>{v.end}</td>
-                            <td>{v.bus_seat}</td>
-                            <td>
+                            <td>{v.id_user}</td>
+                            <td>{v.id_schedule}</td>
+                            <td>{v.created_at.slice(0,10)}</td>
+                            {/* <td>
                               <Icons><FaPencilAlt/></Icons>
                               <Icons><FaTrash/></Icons>
-                            </td>
+                            </td> */}
                           </tr>
                         )
                       })
                     }                  
                   <tr>
                     <td colspan={10}>
-                      <span><MdAddCircle size={30}/>Add Schedule</span>
+                      <span><MdAddCircle size={30}/>Add Transaction</span>
                     </td>
                   </tr>
                   </tbody>
@@ -93,8 +85,8 @@ class Schedule extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    Schedule: state.Schedules
+    Transaction: state.Transactions
   }
 }
-const mapDispatchToProps = {showSchedule}
-export default connect(mapStateToProps, mapDispatchToProps) (Schedule)
+const mapDispatchToProps = {getTrans}
+export default connect(mapStateToProps, mapDispatchToProps) (Transaction)

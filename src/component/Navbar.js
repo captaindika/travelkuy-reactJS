@@ -98,7 +98,7 @@ export default class Navbar extends Component {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>
-                  <CustomLink to='/dashboard'>
+                  <CustomLink to='/transaction'>
                     <Symetris><AiOutlineTransaction size={17}/></Symetris>
                     <Symetris>Transaction</Symetris>
                   </CustomLink>

@@ -10,7 +10,7 @@ export const GetDataAgent = () => async dispatch => {
 
     dispatch({
       type: 'GET_AGENT',
-      payload: res.data
+      payload: res.data 
     })
   } catch (error) {
     console.log(error)
