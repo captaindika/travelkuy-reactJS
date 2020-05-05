@@ -34,7 +34,7 @@ class Dashboard extends Component {
     await this.props.showRoutes()
     await this.props.showSchedule()
     await this.props.getTrans()
-    console.log('ini bus', this.props.Bus)
+    console.log(localStorage.getItem('token'))
   }
   render() {
     return (

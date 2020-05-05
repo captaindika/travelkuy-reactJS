@@ -7,8 +7,6 @@ export default function isLogin(state = initialState, action) {
 
   switch(action.type){
     case 'IS_LOGIN':
-      const {isLogged, userInfo} = state
-      
       return {
         ...state,
         isLogged :true,

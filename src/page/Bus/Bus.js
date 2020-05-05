@@ -3,6 +3,7 @@ import React, { Component, useState } from 'react'
 import Navbar from '../../component/Navbar'
 import {Container, Col, Table, Form, Button,
    FormGroup, Input, Label, ModalHeader, ModalBody, Modal, ModalFooter} from 'reactstrap'
+import {Alert} from 'react'
 import styled from 'styled-components'
 import {IoMdAddCircle} from 'react-icons/io'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
@@ -45,8 +46,7 @@ class Bus extends Component {
        await this.props.getBus()
         await this.props.deleteBus(this.props.id)
         await this.props.GetDataAgent()
-        console.log('asdasdasdasdasdasdsad')
-        console.log('ini agent',this.props.Agent)
+        console.log('ini agent adasdasdasdasdasdasdasd')
      } catch (err) {
         console.log(err)
      }
@@ -55,9 +55,11 @@ class Bus extends Component {
     super(props)
     this.state = {
       modal: false,
+      dropdownOpen: false
     }
     this.toggle = () => this.setState({modal: !this.state.modal })
   }
+
   
   render() {
     return (
@@ -88,7 +90,7 @@ class Bus extends Component {
                           <td>{v.car_name}</td>
                           <td>{v.bus_seat}</td>
                           <td>
-                              <Icons onClick={this.toggle}><FaPencilAlt/></Icons>
+                              <Icons onClick={()=> Alert.alert('Edit data')}><FaPencilAlt/></Icons>
                               <Icons onClick={() => this.props.deleteBus(v.id)}><FaTrash /></Icons>
                           </td>
                         </tr>
@@ -98,7 +100,7 @@ class Bus extends Component {
                   </tbody>
                   <tbody>
                   <tr>
-                    <CustomTD colspan={5}>
+                    <CustomTD colspan={5} onClick={this.toggle} style={{cursor:'pointer'}}>
                       <span class='text-left'><IoMdAddCircle size={30} color='black'/><b>Add Car</b></span>
                     </CustomTD>
                   </tr>
@@ -106,7 +108,6 @@ class Bus extends Component {
                 </CustomTable>
             </Cols>
             <div>
-              {/* <Button color="danger" onClick={this.toggle}>Modal</Button> */}
               <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
                 <ModalHeader toggle={this.toggle}>Add Bus</ModalHeader>
                 <ModalBody>
@@ -119,6 +120,12 @@ class Bus extends Component {
                         )
                       })}
                     </Input>
+                  </FormGroup>
+                  <FormGroup>
+                    <Input type='text' name='name' placeholder='bus name'/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Input type='number' min={0} max={20} placeholder='Seat quota'/>
                   </FormGroup>
                 </ModalBody>
                 <ModalFooter>

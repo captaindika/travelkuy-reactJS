@@ -10,7 +10,16 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Dropdown,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  FormGroup,
+  Input,
+  Label
 } from 'reactstrap';
 import {MdCardTravel, MdAccountCircle, MdSchedule} from 'react-icons/md'
 import {AiOutlineTransaction} from 'react-icons/ai'
@@ -58,18 +67,22 @@ export default connect(mapStateToProps, {setLogout})(class Navbar extends Compon
   constructor(props){
     super(props)
     this.state = {
-      isOpen: false
+      isOpen: false,
+      dropdownOpen: false,
+      modal: false
     }
     this.toggle = () => {
       this.setState({isOpen: true})
     }
+
+    this.toggleAccount = () => this.setState({dropdownOpen: !this.state.dropdownOpen})
+    this.toggleModal = () => this.setState({modal: !this.state.modal})
   }
 
   logout = () => {
     this.props.setLogout()
   }
   render() {
-    // console.log('seeeeeeeeeeeeee',this.props)
     return (
       <>
         <Navibar color="dark" light expand="md">
@@ -120,10 +133,47 @@ export default connect(mapStateToProps, {setLogout})(class Navbar extends Compon
           </Nav>
           <Navitem 
             style={{cursor: 'pointer'}}>
-                <MdAccountCircle size={32} onClick={this.logout}/>
+                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleAccount}>
+                  <DropdownToggle caret>
+                    <MdAccountCircle size={32} />
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                  <DropdownItem header>Profil</DropdownItem>
+                    <DropdownItem onClick={this.toggleModal}>Update Profile</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.logout}>Log out</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
           </Navitem>
         </Collapse>
       </Navibar>
+        <div>
+          <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
+            <ModalHeader toggle={this.toggleModal}>Update Profile</ModalHeader>
+            <ModalBody>
+              <FormGroup>
+                <Label for='fullName'>Full Name</Label>
+                <Input placeholder='full name' id='fullName'/>
+              </FormGroup>
+              <FormGroup>
+              <Label for='email'>Email</Label>
+                <Input placeholder='email' id='email'/>
+              </FormGroup>
+              <FormGroup>
+              <Label for='phone'>Phone</Label>
+                <Input placeholder='phone' id='phone'/>
+              </FormGroup>
+              <FormGroup>
+                <Label for='photo'>Upload Photo</Label>
+                <Input type='file' name='picture' id='photo'/>
+              </FormGroup>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={this.toggleModal}>Update</Button>{' '}
+              <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
+        </div>
       </>
     )
   }

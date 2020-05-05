@@ -33,7 +33,6 @@ import axios from 'axios'
      localStorage.removeItem('token')
      history.push('/')
    }
-
    dispatch({
      type: 'IS_LOGOUT'
    })

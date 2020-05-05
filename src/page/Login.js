@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {Container, Col, Form, FormGroup, Label, Input, Button} from 'reactstrap'
 import axios from 'axios'
@@ -46,11 +46,20 @@ const Login = (props) => {
   const submitPassword = (e) => {
     setPassword(e.target.value)
   }
+
+  const data = {
+    username,
+    password
+  }
   
   const onLogin = async (e) => {
     e.preventDefault()
-    props.setLogin(username, password)
+    props.setLogin(data)
   }  
+
+  useEffect(() => {
+    console.log(localStorage.getItem('token'))
+  })
     return (
       <>
       <Background>
