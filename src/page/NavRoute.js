@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Dashboard from './Dashboard'
 import Bus from './Bus/Bus'
-import Routes from './Route'
+import Routes from './Route/Route'
 import Schedule from './Schedule'
 import Transaction from './Transaction'
 import Notfound from './Notfound'
@@ -17,7 +17,8 @@ class NavRoute extends Component {
   }
 
   render() {
-    if (localStorage.getItem('Token')) {
+    console.log(localStorage.getItem('token'))
+    if (localStorage.getItem('token')) {
       history.push('/dashboard')
       return (
         <div>

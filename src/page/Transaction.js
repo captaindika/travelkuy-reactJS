@@ -69,11 +69,6 @@ class Transaction extends Component {
                         )
                       })
                     }                  
-                  <tr>
-                    <td colspan={10}>
-                      <span><MdAddCircle size={30}/>Add Transaction</span>
-                    </td>
-                  </tr>
                   </tbody>
                 </Tablemid>
             </Col>

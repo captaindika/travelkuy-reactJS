@@ -1,9 +1,8 @@
 // styling
-import React, { Component, useState } from 'react'
+import React, { Component} from 'react'
 import Navbar from '../../component/Navbar'
 import {Container, Col, Table, Form, Button,
-   FormGroup, Input, Label, ModalHeader, ModalBody, Modal, ModalFooter} from 'reactstrap'
-import {Alert} from 'react'
+   FormGroup, Input, Label} from 'reactstrap'
 import styled from 'styled-components'
 import {IoMdAddCircle} from 'react-icons/io'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
@@ -12,6 +11,10 @@ import {FaPencilAlt, FaTrash} from 'react-icons/fa'
 import {getBus, deleteBus} from '../../Redux/actions/admin/Buss'
 import {GetDataAgent} from '../../Redux/actions/admin/Agent'
 import {connect} from 'react-redux'
+
+// component
+import AddBus from './AddBus'
+import UpdateBus from './UpdateBus'
 
 const Label1 = styled(Label)`
 font-weight: bold;
@@ -46,7 +49,6 @@ class Bus extends Component {
        await this.props.getBus()
         await this.props.deleteBus(this.props.id)
         await this.props.GetDataAgent()
-        console.log('ini agent adasdasdasdasdasdasdasd')
      } catch (err) {
         console.log(err)
      }
@@ -55,9 +57,15 @@ class Bus extends Component {
     super(props)
     this.state = {
       modal: false,
+      updateModal: false,
       dropdownOpen: false
     }
     this.toggle = () => this.setState({modal: !this.state.modal })
+    this.toggleUpdate = () => this.setState({updateModal: !this.state.updateModal})
+  }
+
+  createAlert = () => {
+   alert('halo')
   }
 
   
@@ -90,7 +98,7 @@ class Bus extends Component {
                           <td>{v.car_name}</td>
                           <td>{v.bus_seat}</td>
                           <td>
-                              <Icons onClick={()=> Alert.alert('Edit data')}><FaPencilAlt/></Icons>
+                              <Icons onClick={this.toggleUpdate}><FaPencilAlt/></Icons>
                               <Icons onClick={() => this.props.deleteBus(v.id)}><FaTrash /></Icons>
                           </td>
                         </tr>
@@ -107,35 +115,10 @@ class Bus extends Component {
                   </tbody>
                 </CustomTable>
             </Cols>
-            <div>
-              <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
-                <ModalHeader toggle={this.toggle}>Add Bus</ModalHeader>
-                <ModalBody>
-                  <FormGroup>
-                    <Label for='agent'>Agent's name</Label>
-                    <Input type='select' name='agent' id='agent'>
-                      {this.props.Agent.data.data && this.props.Agent.data.data.map((v,i) => {
-                        return (
-                          <option>{v.name}</option>
-                        )
-                      })}
-                    </Input>
-                  </FormGroup>
-                  <FormGroup>
-                    <Input type='text' name='name' placeholder='bus name'/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Input type='number' min={0} max={20} placeholder='Seat quota'/>
-                  </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="primary" onClick={this.toggle}>Add</Button>{' '}
-                  <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                </ModalFooter>
-              </Modal>
-            </div>
+            
         </Content>
-        
+        <AddBus modal={this.state.modal} close={()=>this.setState({modal: false})} add={this.createAlert} />
+        <UpdateBus updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} update={this.createAlert} />
       </>
     )
   }

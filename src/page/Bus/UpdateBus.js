@@ -5,13 +5,13 @@ import {
 import {connect} from 'react-redux'
 import {GetDataAgent} from '../../Redux/actions/admin/Agent'
 
-class AddBus extends Component {
+class UpdateBus extends Component {
   render() {
     return (
       <>
         <div>
-              <Modal isOpen={this.props.modal} className={this.className}>
-                <ModalHeader >Add Bus</ModalHeader>
+              <Modal isOpen={this.props.updateModal} className={this.className}>
+                <ModalHeader >Update Bus</ModalHeader>
                 <ModalBody>
                   <FormGroup>
                     <Label for='agent'>Agent's name</Label>
@@ -31,7 +31,7 @@ class AddBus extends Component {
                   </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={this.props.add}>Add</Button>{' '}
+                  <Button color="primary" onClick={this.props.update}>Update</Button>{' '}
                   <Button color="secondary" onClick={this.props.close}>Cancel</Button>
                 </ModalFooter>
               </Modal>
@@ -48,4 +48,4 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {GetDataAgent}
-export default connect(mapStateToProps, mapDispatchToProps)(AddBus)
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateBus)

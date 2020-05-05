@@ -4,10 +4,12 @@ import {Container, Col, Table, Form,
 import styled from 'styled-components'
 import {MdAddCircle} from 'react-icons/md'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
-import Navbar from '../component/Navbar'
-import Footer from '../component/Footer'
+import Navbar from '../../component/Navbar'
+import Footer from '../../component/Footer'
+import AddRoute from '../Route/AddRoute'
+import UpdateRoute from '../Route/UpdateRoute'
 
-import {showRoutes} from '../Redux/actions/admin/Route'
+import {showRoutes, deleteRoutes} from '../../Redux/actions/admin/Route'
 import {connect} from 'react-redux'
 
 const Content = styled(Container)`
@@ -34,6 +36,19 @@ font-weight: bold;
 `
 
 class Routes extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      modal: false,
+      updateModal: false
+    }
+    this.toggle = () => this.setState({modal: !this.state.modal})
+    this.updateToggle = () => this.setState({updateModal: !this.state.updateModal})
+    // this.deleteRoute = ()=> {
+    //   this.props.deleteRoutes(v.id)
+    //   this.props.showRoutes()
+    // }
+  }
   componentDidMount() {
     this.props.showRoutes()
   }
@@ -66,8 +81,8 @@ class Routes extends Component {
                             <td>{v.start}</td>
                             <td>{v.end}</td>
                             <td>
-                              <Icons><FaPencilAlt/></Icons>
-                              <Icons><FaTrash/></Icons>
+                              <Icons onClick={this.updateToggle} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
+                              <Icons onClick={()=>this.props.deleteRoutes(v.id)} style={{cursor: 'pointer'}}><FaTrash/></Icons>
                             </td>
                           </tr>
                         )
@@ -75,7 +90,7 @@ class Routes extends Component {
                     }                  
                   <RowAdd>
                     <td colspan={4}>
-                      <span><MdAddCircle size={30}/>Add Route</span>
+                      <span onClick={this.toggle} style={{cursor: 'pointer'}}><MdAddCircle size={30}/>Add Route</span>
                     </td>
                   </RowAdd>
                   </tbody>
@@ -83,6 +98,8 @@ class Routes extends Component {
             </Col>
         </Content>       
       <Footer/>
+      <AddRoute modal={this.state.modal} close={()=>this.setState({modal: false})} add={()=>alert('add')}/>
+      <UpdateRoute updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} add={()=> alert('add')} />
       </>
     )
   }
@@ -93,5 +110,5 @@ const mapStateToProps = (state) => {
     Route: state.Routes
   }
 }
-const mapDispatchToProps = {showRoutes}
+const mapDispatchToProps = {showRoutes, deleteRoutes}
 export default connect(mapStateToProps, mapDispatchToProps) (Routes)

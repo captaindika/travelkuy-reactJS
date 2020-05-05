@@ -1,5 +1,4 @@
 import Config from '../../../utils/Config'
-
 import axios from 'axios'
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
@@ -22,32 +21,31 @@ export const deleteRoutes = (id) => async dispatch => {
   try {
     const res = await axios.delete(Config.APP_BACKEND.concat(`admin/route/delete/${id}`))
     if(res) {
-      alert('ok')
+      dispatch({
+        type: `DELETE_ROUTES`,
+        payload: res.data
+      })
+      alert('Delete success')
     } else {
       alert('fail delete')
-    }
-    dispatch({
-      type: `DELETE_ROUTES`,
-      payload: res.data
-    })
-  
+    }  
   } catch (error) {
     console.log(error)
   }
 }
 
-export const CreateRoutes = (id, data) => async dispatch => {
+export const CreateRoutes = (data) => async dispatch => {
   try{
-    const res = await axios.post(Config.APP_BACKEND.concat(`admin/route/add/${id}`), data)
+    const res = await axios.post(Config.APP_BACKEND.concat(`admin/route/add`), data)
     if(res) {
-      alert ('ok')
+      dispatch({
+        type: 'ADD_ROUTES',
+        payload:res.data
+      })
+      alert ('add routes success')
     } else {
       alert('failed')
     }
-    dispatch({
-      type: 'ADD_ROUTES',
-      payload:res.data
-    })
   } catch (error) {
     console.log(error)
   }
@@ -57,14 +55,14 @@ export const UpdateRoutes = (id, data) => async dispatch => {
   try{
     const res = await axios.patch(Config.APP_BACKEND.concat(`admin/route/update/${id}`), data)
     if (res) {
-      alert('success')
+      dispatch({
+        type: 'UPDATE_ROUTES',
+        payload:res.data
+      })
+      alert('update success')
     } else {
       alert('failed')
     }
-    dispatch({
-      type: 'UPDATE_ROUTES',
-      payload:res.data
-    })
   } catch (error) {
     console.log(error)
   }
