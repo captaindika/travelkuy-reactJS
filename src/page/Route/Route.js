@@ -84,6 +84,7 @@ class Routes extends Component {
                               <Icons onClick={this.updateToggle} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
                               <Icons onClick={()=>this.props.deleteRoutes(v.id)} style={{cursor: 'pointer'}}><FaTrash/></Icons>
                             </td>
+                            <UpdateRoute updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} id={`${v.id}`} />
                           </tr>
                         )
                       })
@@ -99,7 +100,7 @@ class Routes extends Component {
         </Content>       
       <Footer/>
       <AddRoute modal={this.state.modal} close={()=>this.setState({modal: false})} add={()=>alert('add')}/>
-      <UpdateRoute updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} add={()=> alert('add')} />
+      
       </>
     )
   }
