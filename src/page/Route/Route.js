@@ -49,7 +49,7 @@ class Routes extends Component {
     //   this.props.showRoutes()
     // }
   }
-  componentDidMount() {
+  async componentDidMount() {
     this.props.showRoutes()
   }
   render() {
@@ -100,7 +100,6 @@ class Routes extends Component {
         </Content>       
       <Footer/>
       <AddRoute modal={this.state.modal} close={()=>this.setState({modal: false})} add={()=>alert('add')}/>
-      
       </>
     )
   }
