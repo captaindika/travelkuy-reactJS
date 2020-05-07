@@ -1,5 +1,5 @@
 import Config from '../../../utils/Config'
-
+import history from '../../../utils/History'
 import axios from 'axios'
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
@@ -14,6 +14,24 @@ export const GetDataAgent = () => async dispatch => {
     })
   } catch (error) {
     console.log(error)
+  }
+}
+
+export const addBus = (data) => async dispatch => {
+  try {
+    const res = await axios.post(Config.APP_BACKEND.concat('admin/bus/add'), data)
+    if (res) {
+      dispatch({
+        type: 'ADD_BUS',
+        payload: res.data
+      })
+      alert('Add buss successfull')
+      history.push('/car')
+    } else {
+      alert('failed to add buss')
+    }
+  } catch(err) {
+    console.log(err)
   }
 }
 

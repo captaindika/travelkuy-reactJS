@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import {Container, Col, Table, Form,
-  FormGroup, Input, Label} from 'reactstrap'
+  FormGroup, Input, Label, Pagination, PaginationItem, PaginationLink} from 'reactstrap'
 import styled from 'styled-components'
 import {MdAddCircle} from 'react-icons/md'
-import {FaPencilAlt, FaTrash} from 'react-icons/fa'
+import {FaPencilAlt, FaTrash, FaSearch, FaSortAmountDown, FaSortAmountUp} from 'react-icons/fa'
 import Navbar from '../../component/Navbar'
 import Footer from '../../component/Footer'
 import AddRoute from '../Route/AddRoute'
@@ -40,19 +40,101 @@ class Routes extends Component {
     super(props)
     this.state={
       modal: false,
-      updateModal: false
+      updateModal: false,
+      currentPage: 1,
+      sort: 0,
+      sortKey:'',
+      searchKey:'',
+      search:'',
+      disableNext: false,
+      disablePrev: false,
+      sortCondition: true,
+      sortIcon: <FaSortAmountDown/>
     }
     this.toggle = () => this.setState({modal: !this.state.modal})
-    this.updateToggle = () => this.setState({updateModal: !this.state.updateModal})
-    // this.deleteRoute = ()=> {
-    //   this.props.deleteRoutes(v.id)
-    //   this.props.showRoutes()
-    // }
+
+    this.nextPage = async (e) => {
+      e.preventDefault()
+      const {page, totalPage} = await this.props.Route.data.pageInfo
+      await this.props.showRoutes(page)
+      this.props.showRoutes(page + 1, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+      if (page !== totalPage -1 ) {
+        this.setState({
+          disableNext: false
+        })
+      } else if (page === totalPage - 1) {
+        this.setState({
+          disableNext: !this.state.disableNext
+        })
+      }
+    }
+    this.prevPage = async (e) => {
+      e.preventDefault()
+      const { page } = await this.props.Route.data.pageInfo
+      await this.props.showRoutes(page)
+      await this.props.showRoutes(page - 1, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+      if (page !== 1 ) {
+        this.setState({
+          disablePrev: false
+        })
+      } else if (page === 1) {
+        this.setState({
+          disablePrev: !this.state.disablePrev
+        })
+      }
+
+      this.handleSort = async () => {
+        await this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+        this.setState({
+          sortCondition: !this.state.sortCondition
+        })
+      }
+    }
+    this.setPage = (e) => {
+      e.preventDefault()
+      this.props.showRoutes(e.target.textContent, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+    }
+
+    this.onHandleChange = async (e) => {
+      this.setState({
+        sortKey: e.target.value,
+        searchKey: e.target.value
+      })
+      if (this.state.searchKey.length <1) {
+        await this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+        if(!this.state.sortCondition) {
+          this.setState({
+            sort: 1,
+            sortIcon: <FaSortAmountUp />
+          })
+          await this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+        } else {
+          this.setState({
+            sort: 0,
+            sortIcon: <FaSortAmountDown />
+          })
+          await this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+        }
+      }
+    }
+
+    this.handleSearch = (e) => {
+      this.setState({
+        search: e.target.value
+      })
+      this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+    }
   }
   async componentDidMount() {
     this.props.showRoutes()
   }
   render() {
+    const page = []
+    const disablePage = []
+    const totalPage = this.props.Route.data.pageInfo && this.props.Route.data.pageInfo.totalPage
+    for (let index = 0; index < totalPage; index++) {
+      page.push(<PaginationItem key={index}> <PaginationLink onClick={this.setPage} href='#'>{index + 1} </PaginationLink></PaginationItem>)
+    }
     return (
       <>
       <Navbar/>
@@ -62,7 +144,7 @@ class Routes extends Component {
                   <FormGroup row>
                     <Label1 for='searching' sm={1}>Search:</Label1>
                     <Col md={5}>
-                      <Input type="text" name="search" id="searching" placeholder="Enter destination" />
+                      <Input type="text" name="search" id="searching" placeholder="Enter destination" onChange={this.handleSearch}/>
                     </Col>
                   </FormGroup>
                 </Form>
@@ -70,21 +152,22 @@ class Routes extends Component {
                   <thead>
                     <th>No</th>
                     <th>From</th>
-                    <th>Destination</th>
+                    <th>Destination </th>
                     <th>Options</th>
+                    <th><FaSortAmountDown onClick={this.handleSort} style={{cursor:'pointer'}}/></th>
                   </thead>
                   <tbody>
                     { this.props.Route.data.data && this.props.Route.data.data.map((v,i)=>{
+                      const { page, perPage } = this.props.Route.data.pageInfo
                         return (
                           <tr>
-                            <th scope='row' key = { i }>{ i + 1} </th>
+                            <th scope='row' key = { i }> {((page - 1) * perPage) + (i + 1) } </th>
                             <td>{v.start}</td>
                             <td>{v.end}</td>
                             <td>
-                              <Icons onClick={this.updateToggle} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
-                              <Icons onClick={()=>this.props.deleteRoutes(v.id)} style={{cursor: 'pointer'}}><FaTrash/></Icons>
+                                <UpdateRoute updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} id={`${v.id}`} />
+                                <Icons onClick={()=> this.props.deleteRoutes(v.id)} style={{cursor: 'pointer'}}><FaTrash/></Icons>
                             </td>
-                            <UpdateRoute updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} id={`${v.id}`} />
                           </tr>
                         )
                       })
@@ -96,6 +179,15 @@ class Routes extends Component {
                   </RowAdd>
                   </tbody>
                 </Tablemid>
+                <Pagination size="lg" aria-label="Page navigation example" style={{display: 'flex', justifyContent: 'center'}}>
+                <PaginationItem>
+                  <PaginationLink disabled={this.state.disablePrev} onClick={this.prevPage} previous />
+                </PaginationItem>
+                  {page}
+                <PaginationItem>
+                  <PaginationLink disabled={this.state.disableNext} onClick={this.nextPage} next/>
+                </PaginationItem>
+              </Pagination>
             </Col>
         </Content>       
       <Footer/>

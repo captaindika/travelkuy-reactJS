@@ -47,7 +47,6 @@ class Bus extends Component {
    async componentDidMount() {
      try {
        await this.props.getBus()
-        await this.props.deleteBus(this.props.id)
         await this.props.GetDataAgent()
      } catch (err) {
         console.log(err)
@@ -117,7 +116,7 @@ class Bus extends Component {
             </Cols>
             
         </Content>
-        <AddBus modal={this.state.modal} close={()=>this.setState({modal: false})} add={this.createAlert} />
+        <AddBus modal={this.state.modal} close={()=>this.setState({modal: false})} />
         <UpdateBus updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} update={this.createAlert} />
       </>
     )

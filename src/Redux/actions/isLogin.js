@@ -31,12 +31,10 @@ import axios from 'axios'
  export const setLogout = (e) => dispatch => {
    if (localStorage.getItem('token')) {
      localStorage.removeItem('token')
-     history.push('/')
      dispatch({
       type: 'IS_LOGOUT'
     })
-   } else {
-     history.push('/')
+    history.push('/')
    }
    
 

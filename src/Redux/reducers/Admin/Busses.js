@@ -23,7 +23,7 @@ export default function Busses(state= initState, action) {
         isLoading: false,
         data: action.payload
       }
-    case 'ADD_BUSSES':
+    case 'ADD_BUS':
       return {
         ...state,
         isLoading: false,

@@ -24,6 +24,7 @@ class NavRoute extends Component {
         <div>
           <Router history={history}>
               <Switch>
+              <Route path='/' exact component={Login}/>
               <Route path='/dashboard' exact render={(props) => <Dashboard {...props}/>}/>
               <Route path='/car' exact render={(props) => <Bus {...props}/>}/>
               <Route path='/route' exact render={(props) => <Routes {...props}/>}/>

@@ -4,6 +4,14 @@ import {
 } from 'reactstrap'
 import {connect} from 'react-redux'
 import {UpdateRoutes} from '../../Redux/actions/admin/Route'
+import styled from 'styled-components'
+import {FaPencilAlt} from 'react-icons/fa'
+
+const Icons = styled.span`
+display: inline;
+width: 100px;
+padding: 5px;
+`
 
 class UpdateBus extends Component {
   constructor(props){
@@ -12,6 +20,7 @@ class UpdateBus extends Component {
       id: 0,
       start: '',
       end: '',
+      updateModal: false
     }
     this.onHandleChange = (e) => {
       this.setState({
@@ -28,12 +37,16 @@ class UpdateBus extends Component {
       console.log(data)
       this.props.UpdateRoutes(this.props.id, data)
     }
+
+    this.updateToggle = () => this.setState({updateModal: !this.state.updateModal})
   }
   render() {
+    console.log(this.props.id)
     return (
       <>
         <div>
-              <Modal isOpen={this.props.updateModal} className={this.className}>
+        <Icons onClick={this.updateToggle} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
+              <Modal isOpen={this.state.updateModal} className={this.className}>
                 <ModalHeader >Update Route</ModalHeader>
                 <ModalBody>
                   <FormGroup>

@@ -2,9 +2,9 @@ import Config from '../../../utils/Config'
 import axios from 'axios'
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
-export const showRoutes = () => async dispatch => {
+export const showRoutes = (page, searchKey, search, sortKey, sort) => async dispatch => {
   try {
-   const res = await axios.get(Config.APP_BACKEND.concat('admin/route'))
+   const res = await axios.get(Config.APP_BACKEND.concat(`admin/route?page=${page}&search[${searchKey || 'end'}]=${search || ''}&sort[${sortKey || 'id'}]=${parseInt(sort)}`))
    dispatch({
      type : 'GET_ROUTES' ,
      payload: res.data
@@ -17,7 +17,6 @@ export const showRoutes = () => async dispatch => {
 }
 
 export const deleteRoutes = (id) => async dispatch => {
-
   try {
     const res = await axios.delete(Config.APP_BACKEND.concat(`admin/route/delete/${id}`))
     if(res) {
