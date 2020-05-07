@@ -4,6 +4,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
 
 export const showRoutes = (page, searchKey, search, sortKey, sort) => async dispatch => {
   try {
+    console.log(search)
    const res = await axios.get(Config.APP_BACKEND.concat(`admin/route?page=${page}&search[${searchKey || 'end'}]=${search || ''}&sort[${sortKey || 'id'}]=${parseInt(sort)}`))
    dispatch({
      type : 'GET_ROUTES' ,

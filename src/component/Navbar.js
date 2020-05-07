@@ -28,6 +28,7 @@ import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {setLogout} from '../Redux/actions/isLogin'
+import {connect} from 'react-redux'
 
 
 const Navitem = styled(NavItem)`
@@ -69,7 +70,9 @@ export default connect(mapStateToProps, {setLogout})(class Navbar extends Compon
     this.state = {
       isOpen: false,
       dropdownOpen: false,
-      modal: false
+      modal: false,
+      name: '',
+
     }
     this.toggle = () => {
       this.setState({isOpen: true})

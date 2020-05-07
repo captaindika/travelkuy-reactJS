@@ -48,8 +48,7 @@ class Routes extends Component {
       search:'',
       disableNext: false,
       disablePrev: false,
-      sortCondition: true,
-      sortIcon: <FaSortAmountDown/>
+      sortCondition: true
     }
     this.toggle = () => this.setState({modal: !this.state.modal})
 
@@ -82,14 +81,18 @@ class Routes extends Component {
           disablePrev: !this.state.disablePrev
         })
       }
-
-      this.handleSort = async () => {
-        await this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+    }
+     
+    this.handleSort = (field) => {
+        const sort = this.state.sort ? this.state.sort - 1 : this.state.sort + 1
+        console.log(sort)
+        this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, field, parseInt(sort))
         this.setState({
+          sort: sort,
           sortCondition: !this.state.sortCondition
         })
       }
-    }
+    
     this.setPage = (e) => {
       e.preventDefault()
       this.props.showRoutes(e.target.textContent, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
@@ -122,7 +125,7 @@ class Routes extends Component {
       this.setState({
         search: e.target.value
       })
-      this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+      this.props.showRoutes(this.props.Route.data.pageInfo.page, this.state.searchKey, e.target.value, this.state.sortKey, parseInt(this.state.sort))
     }
   }
   async componentDidMount() {
@@ -151,10 +154,9 @@ class Routes extends Component {
                 <Tablemid>
                   <thead>
                     <th>No</th>
-                    <th>From</th>
-                    <th>Destination </th>
+                    <th onClick={()=>this.handleSort('start')} style={{cursor: 'pointer'}}>From</th>
+                    <th onClick={()=> this.handleSort('end')} style={{cursor: 'pointer'}}>Destination </th>
                     <th>Options</th>
-                    <th><FaSortAmountDown onClick={this.handleSort} style={{cursor:'pointer'}}/></th>
                   </thead>
                   <tbody>
                     { this.props.Route.data.data && this.props.Route.data.data.map((v,i)=>{
