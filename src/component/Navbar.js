@@ -28,7 +28,9 @@ import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {setLogout} from '../Redux/actions/isLogin'
-import {connect} from 'react-redux'
+import {getProfileDetail, getUser, updateProfile} from '../Redux/actions/admin/Auth'
+import Config from '../utils/Config'
+
 
 
 const Navitem = styled(NavItem)`
@@ -61,18 +63,22 @@ color: black;`
 
 const mapStateToProps = (state) => {
   return {
-    Login: state.isLogin
+    Login: state.isLogin,
+    Profile: state.Profile
   }
 }
-export default connect(mapStateToProps, {setLogout})(class Navbar extends Component {
+export default connect(mapStateToProps, {setLogout, getProfileDetail, getUser, updateProfile})(class Navbar extends Component {
   constructor(props){
     super(props)
     this.state = {
       isOpen: false,
       dropdownOpen: false,
       modal: false,
-      name: '',
-
+      name: this.props.Profile.data.detail && this.props.Profile.data.detail.name,
+      email: this.props.Profile.data.detail && this.props.Profile.data.detail.email,
+      phone: this.props.Profile.data.detail && this.props.Profile.data.detail.phone,
+      file: '',
+      previewPicture: ''
     }
     this.toggle = () => {
       this.setState({isOpen: true})
@@ -80,10 +86,40 @@ export default connect(mapStateToProps, {setLogout})(class Navbar extends Compon
 
     this.toggleAccount = () => this.setState({dropdownOpen: !this.state.dropdownOpen})
     this.toggleModal = () => this.setState({modal: !this.state.modal})
+    this.onHandleChange = (e) => {
+      e.preventDefault()
+      this.setState({
+        [e.target.name] : e.target.value
+      })
+    }
   }
 
+  onUpdate = async (e) => {
+    e.preventDefault()
+    let formData = new FormData()
+    formData.append('picture', this.state.picture)
+    formData.append('name', this.state.name)
+    formData.append('email', this.state.email)
+    formData.append('phone', this.state.phone)
+    await this.props.updateProfile(formData).then(() => this.setState({
+      modal: false
+    }))
+  }
+
+  async componentDidMount() {
+    await this.props.getProfileDetail()
+    await this.props.getUser()
+  }
   logout = () => {
     this.props.setLogout()
+  }
+
+  onSelectPicture = (e) =>{
+    console.log(e.target.files)
+    this.setState({
+      previewPicture: URL.createObjectURL(e.target.files[0]),
+      picture: e.target.files[0]
+    })
   }
   render() {
     return (
@@ -156,23 +192,24 @@ export default connect(mapStateToProps, {setLogout})(class Navbar extends Compon
             <ModalBody>
               <FormGroup>
                 <Label for='fullName'>Full Name</Label>
-                <Input placeholder='full name' id='fullName'/>
+                <Input placeholder='full name' id='fullName' name='name' value={this.state.name} onChange={this.onHandleChange}/>
               </FormGroup>
               <FormGroup>
               <Label for='email'>Email</Label>
-                <Input placeholder='email' id='email'/>
+                <Input placeholder='email' id='email' name='email' value={this.state.email} onChange={this.onHandleChange}/>
               </FormGroup>
               <FormGroup>
               <Label for='phone'>Phone</Label>
-                <Input placeholder='phone' id='phone'/>
+                <Input placeholder='phone' id='phone' name='phone' value={this.state.phone} onChange={this.onHandleChange}/>
               </FormGroup>
+              <img src={this.state.previewPicture} alt='profile'/>
               <FormGroup>
                 <Label for='photo'>Upload Photo</Label>
-                <Input type='file' name='picture' id='photo'/>
+                <Input type='file' name='picture' id='photo' value={this.state.file}  onChange={this.onSelectPicture}/>
               </FormGroup>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.toggleModal}>Update</Button>{' '}
+              <Button color="primary" onClick={this.onUpdate}>Update</Button>
               <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
             </ModalFooter>
           </Modal>

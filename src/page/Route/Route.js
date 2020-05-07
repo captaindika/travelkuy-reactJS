@@ -16,6 +16,7 @@ const Content = styled(Container)`
 display: flex;
 justify-content: center;
 margin-top: 20px;
+height: 120vh;
 `
 const RowAdd = styled.tr`
 text-align: left;`

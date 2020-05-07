@@ -21,7 +21,7 @@ padding: 5px 7px;
 color: black;`
 
 const Content = styled(Container)`
-position: absolute !important;
+position: fixed !important;
 bottom: 0 !important;
 height: 90px;
 background-color: #F6F9A9;
