@@ -55,7 +55,9 @@ class Bus extends Component {
       sortCondition: true,
       sortKey: '',
       searchKey:'',
-      search:''
+      search:'',
+      disableNext: false,
+      disablePrev: false
     }
     this.toggle = () => this.setState({modal: !this.state.modal })
     this.toggleUpdate = () => this.setState({updateModal: !this.state.updateModal})
@@ -68,6 +70,13 @@ class Bus extends Component {
         sort: sort,
         sortCondition: !this.state.sortCondition
       })
+    }
+
+    this.handleSearch = (e) => {
+      this.setState({
+        search: e.target.value
+      })
+      this.props.getBus(this.props.Bus.data.pageInfo.page, this.state.searchKey, e.target.value, this.state.sortKey, parseInt(this.state.sort))
     }
   }
 
@@ -86,7 +95,7 @@ class Bus extends Component {
                   <FormGroup row>
                     <Label1 for='searching' sm={1}>Search:</Label1>
                     <Col md={5}>
-                      <Input type="text" name="search" id="searching" placeholder="Enter car's name" />
+                      <Input type="text" name="search" id="searching" placeholder="Enter car's name" onChange={this.handleSearch}/>
                     </Col>
                   </FormGroup>
                 </Form>

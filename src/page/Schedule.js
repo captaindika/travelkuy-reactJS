@@ -26,9 +26,30 @@ const Content = styled(Container)`
 margin-top: 30px;`
 
 class Schedule extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sort: 0,
+      sortKey: '',
+      searchKey: '',
+      search: '',
+      sortCondition: true
+    }
+
+    this.handleSort = (field) => {
+      const sort = this.state.sort ? this.state.sort - 1 : this.state.sort + 1
+      console.log(sort)
+      this.props.showSchedule(this.props.Schedule.data.pageInfo.page, this.state.searchKey, this.state.search, field, parseInt(sort))
+      this.setState({
+        sort: sort,
+        sortCondition: !this.state.sortCondition
+      })
+    }
+  }
   componentDidMount() {
     this.props.showSchedule()
   }
+
   render() {
     return (
       <>
@@ -46,14 +67,14 @@ class Schedule extends Component {
                 <Tablemid>
                   <thead>
                     <th>No</th>
-                    <th>Id Schedule</th>
-                    <th>Price</th>
-                    <th>Departure Time</th>
-                    <th>Arrive Time</th>
-                    <th>Departure Date</th>
-                    <th>Start</th>
-                    <th>Destination</th>
-                    <th>Bus Seat</th>
+                    <th onClick={()=>this.handleSort('schedules.id')} style={{cursor:'pointer'}}>Id Schedule</th>
+                    <th onClick={()=>this.handleSort('schedules.price')} style={{cursor:'pointer'}}>Price</th>
+                    <th onClick={()=>this.handleSort('schedules.departure_time')} style={{cursor:'pointer'}}>Departure Time</th>
+                    <th onClick={()=>this.handleSort('schedules.arrive_time')} style={{cursor:'pointer'}}>Arrive Time</th>
+                    <th onClick={()=>this.handleSort('schedules.departure_date')} style={{cursor:'pointer'}}>Departure Date</th>
+                    <th onClick={()=>this.handleSort('routes.start')} style={{cursor:'pointer'}}>Start</th>
+                    <th onClick={()=>this.handleSort('routes.end')} style={{cursor:'pointer'}}>Destination</th>
+                    <th onClick={()=>this.handleSort('busses.bus_seat')} style={{cursor:'pointer'}}>Bus Seat</th>
                     <th>Options</th>
                   </thead>
                   <tbody>
