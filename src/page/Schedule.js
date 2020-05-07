@@ -45,6 +45,13 @@ class Schedule extends Component {
         sortCondition: !this.state.sortCondition
       })
     }
+
+    this.handleSearch = (e) => {
+      this.setState({
+        search: e.target.value
+      })
+      this.props.showSchedule(this.props.Schedule.data.pageInfo.page, this.state.searchKey, e.target.value, this.state.sortKey, parseInt(this.state.sort))
+    }
   }
   componentDidMount() {
     this.props.showSchedule()
@@ -60,7 +67,7 @@ class Schedule extends Component {
                   <FormGroup row>
                     <Label1 for='searching' sm={1}>Search:</Label1>
                     <Col md={5}>
-                      <Input type="text" name="search" id="searching" placeholder="Enter destination" />
+                      <Input type="text" name="search" id="searching" placeholder="Enter destination" onChange={this.handleSearch}/>
                     </Col>
                   </FormGroup>
                 </Form>
