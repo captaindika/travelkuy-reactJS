@@ -44,23 +44,31 @@ text-align: left;`
 
 
 class Bus extends Component {
-   async componentDidMount() {
-     try {
-       await this.props.getBus()
-        await this.props.GetDataAgent()
-     } catch (err) {
-        console.log(err)
-     }
-  }
   constructor(props) {
     super(props)
     this.state = {
       modal: false,
       updateModal: false,
-      dropdownOpen: false
+      dropdownOpen: false,
+      currentPage: 1,
+      sort: 0,
+      sortCondition: true,
+      sortKey: '',
+      searchKey:'',
+      search:''
     }
     this.toggle = () => this.setState({modal: !this.state.modal })
     this.toggleUpdate = () => this.setState({updateModal: !this.state.updateModal})
+
+    this.handleSort = (field) => {
+      const sort = this.state.sort ? this.state.sort - 1 : this.state.sort + 1
+      console.log(sort)
+      this.props.getBus(this.props.Bus.data.pageInfo.page, this.state.searchKey, this.state.search, field, parseInt(sort))
+      this.setState({
+        sort: sort,
+        sortCondition: !this.state.sortCondition
+      })
+    }
   }
 
   createAlert = () => {
@@ -85,9 +93,9 @@ class Bus extends Component {
                 <CustomTable>
                   <thead>
                     <th>No</th>
-                    <th>Car's name</th>
-                    <th>Seat</th>
-                    <th>Option</th>
+                    <th onClick={()=>this.handleSort('car_name')} style={{cursor: 'pointer'}}>Car's name</th>
+                    <th onClick={()=>this.handleSort('bus_seat')} style={{cursor: 'pointer'}}>Seat</th>
+                    <th >Option</th>
                   </thead>
                   <tbody>
                   { this.props.Bus.data.data && this.props.Bus.data.data.map((v,i)=>{

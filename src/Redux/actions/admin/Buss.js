@@ -35,8 +35,8 @@ export const addBus = (data) => async dispatch => {
   }
 }
 
-export const getBus = ()=> async dispatch => {
-  const endPoint = Config.APP_BACKEND.concat('admin/bus')
+export const getBus = (page, searchKey, search, sortKey, sort)=> async dispatch => {
+  const endPoint = Config.APP_BACKEND.concat(`admin/bus?page=${page}&search[${searchKey || 'car_name'}]=${search || ''}&sort[${sortKey || 'id'}]=${parseInt(sort)}`)
   try {
     const res = await axios.get(endPoint)
     dispatch({
