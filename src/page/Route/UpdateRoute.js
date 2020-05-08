@@ -34,7 +34,7 @@ class updateRoute extends Component {
         end: this.state.end
       }
       console.log(data)
-      this.props.UpdateRoutes(this.props.id, data)
+      this.props.UpdateRoutes(this.props.idRoute, data)
       this.props.showRoutes()
       this.props.close()
       // history.push('/route')
@@ -43,13 +43,11 @@ class updateRoute extends Component {
 
   }
   render() {
-    console.log(this.props.id)
     return (
       <>
         <div>
-        <Icons onClick={this.props.updateToggle} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
               <Modal isOpen={this.props.updateModal} className={this.className}>
-                <ModalHeader >Update Route</ModalHeader>
+                <ModalHeader >Update Route#{this.props.idRoute}</ModalHeader>
                 <ModalBody>
                   <FormGroup>
                     <Label for='start'>Start</Label>

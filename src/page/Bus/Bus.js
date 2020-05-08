@@ -62,8 +62,11 @@ class Bus extends Component {
       idBus: 0
     }
     this.toggle = () => this.setState({modal: !this.state.modal })
-    this.toggleUpdate = (e) => {this.setState({updateModal: !this.state.updateModal})
-  this.setState({idBus: e})
+    this.toggleUpdate = (e) => {
+    this.setState({
+      updateModal: !this.state.updateModal,
+      idBus: e
+    })
   }
 
     this.handleSort = (field) => {
@@ -124,7 +127,6 @@ class Bus extends Component {
   }
 
   render() {
-    console.log('ini props bus',this.props.Bus)
     const page = []
     const disablePage = []
     const totalPage = this.props.Bus.data.pageInfo && this.props.Bus.data.pageInfo.totalPage

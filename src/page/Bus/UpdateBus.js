@@ -20,8 +20,7 @@ class UpdateBus extends Component {
     this.state = {
       idAgent: 0,
       nameBuss: '',
-      busSeat: 0,
-      idBus: this.props.idBus
+      busSeat: 0
     }
     
     this.onHandleChange = (e) => {
@@ -39,28 +38,30 @@ class UpdateBus extends Component {
     this.onUpdate = (e) => {
       e.preventDefault()
       const data = {
-        nameBuss: this.state.nameBuss,
-        busSeat: this.state.busSeat,
+        name: this.state.nameBuss,
+        size: this.state.busSeat,
         idAgent: this.state.idAgent
       }
       console.log(data)
       this.props.updateBus(this.props.idBus, data)
+      this.props.close()
       this.props.getBus()
+      
     }
 
     
   }
   render() {
-    console.log('semua props', this.props)
+    console.log(this.state)
     return (
       <>
         <div>
           
               <Modal isOpen={this.props.updateModal} className={this.className}>
-                <ModalHeader >Update Bus</ModalHeader>
+                <ModalHeader >Update Bus #ID {this.props.idBus}</ModalHeader>
                 <ModalBody>
                   <FormGroup>
-                    <Label for='agent'>Agent's name #ID {this.props.idBus}</Label>
+                    <Label for='agent'>Agent's name </Label>
                     <Input type='select' name='idAgent' id='agent' onChange={this.setIdAgent}>
                       {this.props.Agent.data.data && this.props.Agent.data.data.map((v,i) => {
                         return (

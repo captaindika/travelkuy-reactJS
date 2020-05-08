@@ -49,10 +49,16 @@ class Routes extends Component {
       search:'',
       disableNext: false,
       disablePrev: false,
-      sortCondition: true
+      sortCondition: true,
+      idRoute: 0
     }
     this.toggle = () => this.setState({modal: !this.state.modal})
-    this.updateToggle = () => this.setState({updateModal: !this.state.updateModal})
+    this.updateToggle = (e) => {
+      this.setState({
+        updateModal: !this.state.updateModal,
+        idRoute: e
+      })
+    }
     this.nextPage = async (e) => {
       e.preventDefault()
       const {page, totalPage} = await this.props.Route.data.pageInfo
@@ -169,13 +175,14 @@ class Routes extends Component {
                             <td>{v.start}</td>
                             <td>{v.end}</td>
                             <td>
-                                <UpdateRoute updateToggle={this.updateToggle} updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} id={`${v.id}`} />
+                                <Icons onClick={()=>this.updateToggle(v.id)} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
                                 <Icons onClick={()=> this.props.deleteRoutes(v.id)} style={{cursor: 'pointer'}}><FaTrash/></Icons>
                             </td>
                           </tr>
                         )
                       })
                     }                  
+                    <UpdateRoute  idRoute={this.state.idRoute} updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} />
                   <RowAdd>
                     <td colspan={4}>
                       <span onClick={this.toggle} style={{cursor: 'pointer'}}><MdAddCircle size={30}/>Add Route</span>
