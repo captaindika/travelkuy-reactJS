@@ -3,7 +3,7 @@ import {
   Modal, ModalHeader, Label, FormGroup, Input, ModalBody, ModalFooter, Button
 } from 'reactstrap'
 import {connect} from 'react-redux'
-import {UpdateRoutes} from '../../Redux/actions/admin/Route'
+import {UpdateRoutes, showRoutes} from '../../Redux/actions/admin/Route'
 import styled from 'styled-components'
 import {FaPencilAlt} from 'react-icons/fa'
 
@@ -13,14 +13,13 @@ width: 100px;
 padding: 5px;
 `
 
-class UpdateBus extends Component {
+class updateRoute extends Component {
   constructor(props){
     super(props)
     this.state = {
       id: 0,
       start: '',
-      end: '',
-      updateModal: false
+      end: ''
     }
     this.onHandleChange = (e) => {
       this.setState({
@@ -36,17 +35,20 @@ class UpdateBus extends Component {
       }
       console.log(data)
       this.props.UpdateRoutes(this.props.id, data)
+      this.props.showRoutes()
+      this.props.close()
+      // history.push('/route')
+      // this.renderRedirect()
     }
 
-    this.updateToggle = () => this.setState({updateModal: !this.state.updateModal})
   }
   render() {
     console.log(this.props.id)
     return (
       <>
         <div>
-        <Icons onClick={this.updateToggle} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
-              <Modal isOpen={this.state.updateModal} className={this.className}>
+        <Icons onClick={this.props.updateToggle} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
+              <Modal isOpen={this.props.updateModal} className={this.className}>
                 <ModalHeader >Update Route</ModalHeader>
                 <ModalBody>
                   <FormGroup>
@@ -75,5 +77,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {UpdateRoutes}
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateBus)
+const mapDispatchToProps = {UpdateRoutes, showRoutes}
+export default connect(mapStateToProps, mapDispatchToProps)(updateRoute)

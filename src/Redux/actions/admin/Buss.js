@@ -77,3 +77,21 @@ export const deleteBus = (id) => async dispatch => {
     console.log(error)
   }
 }
+
+export const updateBus = (id, data) => async dispatch => {
+  try{
+    const res = await axios.patch(Config.APP_BACKEND.concat(`admin/bus/update/${id}`), data)
+    console.log(res)
+    if (res) {
+      dispatch({
+        type: 'UPDATE_BUS',
+        payload:res.data
+      })
+      alert('update success')
+    } else {
+      alert('failed')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}

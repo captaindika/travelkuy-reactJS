@@ -21,7 +21,7 @@ export default function Routes (state = initState, action) {
       return {
         ...state,
         loading: false,
-        data: action.payload
+        data: action.payload.info
       }
     case 'DELETE_ROUTES' :
       return {

@@ -35,6 +35,12 @@ export default function Busses(state= initState, action) {
         isLoading: false,
         data: action.payload
       }
+    case 'UPDATE_BUS':
+      return {
+        ...state,
+        isLoading: false,
+        data: action.payload
+      }
     default:
       return {...state}
   }

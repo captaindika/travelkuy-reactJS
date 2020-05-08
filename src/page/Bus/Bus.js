@@ -2,7 +2,7 @@
 import React, { Component} from 'react'
 import Navbar from '../../component/Navbar'
 import {Container, Col, Table, Form, Button,
-   FormGroup, Input, Label} from 'reactstrap'
+   FormGroup, Input, Label, Pagination, PaginationItem, PaginationLink} from 'reactstrap'
 import styled from 'styled-components'
 import {IoMdAddCircle} from 'react-icons/io'
 import {FaPencilAlt, FaTrash} from 'react-icons/fa'
@@ -38,6 +38,7 @@ const Content = styled(Container)`
 display: flex;
 justify-content: center;
 margin-top: 20px;
+height: 120vh;
 `
 const CustomTD = styled('td')`
 text-align: left;`
@@ -57,10 +58,13 @@ class Bus extends Component {
       searchKey:'',
       search:'',
       disableNext: false,
-      disablePrev: false
+      disablePrev: false,
+      idBus: 0
     }
     this.toggle = () => this.setState({modal: !this.state.modal })
-    this.toggleUpdate = () => this.setState({updateModal: !this.state.updateModal})
+    this.toggleUpdate = (e) => {this.setState({updateModal: !this.state.updateModal})
+  this.setState({idBus: e})
+  }
 
     this.handleSort = (field) => {
       const sort = this.state.sort ? this.state.sort - 1 : this.state.sort + 1
@@ -78,14 +82,55 @@ class Bus extends Component {
       })
       this.props.getBus(this.props.Bus.data.pageInfo.page, this.state.searchKey, e.target.value, this.state.sortKey, parseInt(this.state.sort))
     }
+
+    this.nextPage = async (e) => {
+      e.preventDefault()
+      const {page, totalPage} = await this.props.Route.data.pageInfo
+      await this.props.getBus(page)
+      this.props.getBus(page + 1, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+      if (page !== totalPage -1 ) {
+        this.setState({
+          disableNext: false
+        })
+      } else if (page === totalPage - 1) {
+        this.setState({
+          disableNext: !this.state.disableNext
+        })
+      }
+    }
+    this.prevPage = async (e) => {
+      e.preventDefault()
+      const { page } = await this.props.Route.data.pageInfo
+      await this.props.getBus(page)
+      await this.props.getBus(page - 1, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+      if (page !== 1 ) {
+        this.setState({
+          disablePrev: false
+        })
+      } else if (page === 1) {
+        this.setState({
+          disablePrev: !this.state.disablePrev
+        })
+      }
+    }
+    this.setPage = (e) => {
+      e.preventDefault()
+      this.props.getBus(e.target.textContent, this.state.searchKey, this.state.search, this.state.sortKey, parseInt(this.state.sort))
+    }
   }
 
   createAlert = () => {
    alert('halo')
   }
 
-  
   render() {
+    console.log('ini props bus',this.props.Bus)
+    const page = []
+    const disablePage = []
+    const totalPage = this.props.Bus.data.pageInfo && this.props.Bus.data.pageInfo.totalPage
+    for (let index = 0; index < totalPage; index++) {
+      page.push(<PaginationItem key={index}> <PaginationLink onClick={this.setPage} href='#'>{index + 1} </PaginationLink></PaginationItem>)
+    }
     return (
       <>
       <Navbar/>
@@ -108,19 +153,21 @@ class Bus extends Component {
                   </thead>
                   <tbody>
                   { this.props.Bus.data.data && this.props.Bus.data.data.map((v,i)=>{
+                    const { page, perPage } = this.props.Bus.data.pageInfo
                       return (
                         <tr>
-                          <th scope='row' key = { i }>{ i + 1} </th>
+                          <th scope='row' key = { i }> {((page - 1) * perPage) + (i + 1) } </th>
                           <td>{v.car_name}</td>
                           <td>{v.bus_seat}</td>
                           <td>
-                              <Icons onClick={this.toggleUpdate}><FaPencilAlt/></Icons>
-                              <Icons onClick={() => this.props.deleteBus(v.id)}><FaTrash /></Icons>
+                          <Icons onClick={()=>this.toggleUpdate(v.id)} style={{cursor: 'pointer'}}><FaPencilAlt/></Icons>
+                          <Icons onClick={() => this.props.deleteBus(v.id)}><FaTrash /></Icons>
                           </td>
                         </tr>
                       )
                     })
                   }
+                  <UpdateBus idBus={this.state.idBus} toggleUpdate={this.toggleUpdate} updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})}  />
                   </tbody>
                   <tbody>
                   <tr>
@@ -130,11 +177,20 @@ class Bus extends Component {
                   </tr>
                   </tbody>
                 </CustomTable>
+                <Pagination size="lg" aria-label="Page navigation example" style={{display: 'flex', justifyContent: 'center'}}>
+                <PaginationItem>
+                  <PaginationLink disabled={this.state.disablePrev} onClick={this.prevPage} previous />
+                </PaginationItem>
+                  {page}
+                <PaginationItem>
+                  <PaginationLink disabled={this.state.disableNext} onClick={this.nextPage} next/>
+                </PaginationItem>
+              </Pagination>
             </Cols>
             
         </Content>
         <AddBus modal={this.state.modal} close={()=>this.setState({modal: false})} />
-        <UpdateBus updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} update={this.createAlert} />
+        {/* <UpdateBus updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} update={this.createAlert} /> */}
       </>
     )
   }

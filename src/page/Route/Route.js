@@ -52,7 +52,7 @@ class Routes extends Component {
       sortCondition: true
     }
     this.toggle = () => this.setState({modal: !this.state.modal})
-
+    this.updateToggle = () => this.setState({updateModal: !this.state.updateModal})
     this.nextPage = async (e) => {
       e.preventDefault()
       const {page, totalPage} = await this.props.Route.data.pageInfo
@@ -133,6 +133,7 @@ class Routes extends Component {
     this.props.showRoutes()
   }
   render() {
+    console.log(this.props.Route)
     const page = []
     const disablePage = []
     const totalPage = this.props.Route.data.pageInfo && this.props.Route.data.pageInfo.totalPage
@@ -168,7 +169,7 @@ class Routes extends Component {
                             <td>{v.start}</td>
                             <td>{v.end}</td>
                             <td>
-                                <UpdateRoute updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} id={`${v.id}`} />
+                                <UpdateRoute updateToggle={this.updateToggle} updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} id={`${v.id}`} />
                                 <Icons onClick={()=> this.props.deleteRoutes(v.id)} style={{cursor: 'pointer'}}><FaTrash/></Icons>
                             </td>
                           </tr>
