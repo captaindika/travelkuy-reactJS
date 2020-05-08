@@ -1,5 +1,6 @@
 const initState = {
   data: [],
+  dataSchedule: [],
   isLoading: false
 }
 
@@ -10,6 +11,12 @@ export default function Busses(state= initState, action) {
         ...state,
         isLoading: false,
         data: action.payload
+      }
+    case 'GET_BUS_SCHEDULE':
+      return {
+        ...state,
+        isLoading: false,
+        dataSchedule: action.payload
       }
     case 'GET_TOTALBUSSES':
       return {

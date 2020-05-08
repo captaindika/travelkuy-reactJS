@@ -5,9 +5,10 @@ import styled from 'styled-components'
 import {MdAddCircle} from 'react-icons/md'
 import {FaPencilAlt,FaTrash} from 'react-icons/fa'
 import Navbar from '../../component/Navbar'
-
+import AddSchedule from '../Schedule/addSchedule'
 import {connect} from 'react-redux'
-import {showSchedule} from '../../Redux/actions/admin/Schedule'
+import {showSchedule, deleteSchedule} from '../../Redux/actions/admin/Schedule'
+import history from '../../utils/History'
 
 
 const Label1 = styled(Label)`
@@ -33,8 +34,11 @@ class Schedule extends Component {
       sortKey: '',
       searchKey: '',
       search: '',
-      sortCondition: true
+      sortCondition: true,
+      modal: false
     }
+
+    this.toggle = () => this.setState({modal: !this.state.modal })
 
     this.handleSort = (field) => {
       const sort = this.state.sort ? this.state.sort - 1 : this.state.sort + 1
@@ -52,9 +56,11 @@ class Schedule extends Component {
       })
       this.props.showSchedule(this.props.Schedule.data.pageInfo.page, this.state.searchKey, e.target.value, this.state.sortKey, parseInt(this.state.sort))
     }
-  }
-  componentDidMount() {
-    this.props.showSchedule()
+    this.deleteSchedule = (id) => {
+      this.props.deleteSchedule(id)
+      this.props.showSchedule()
+      history.push('/schedule')
+    }
   }
 
   render() {
@@ -99,15 +105,16 @@ class Schedule extends Component {
                             <td>{v.bus_seat}</td>
                             <td>
                               <Icons><FaPencilAlt/></Icons>
-                              <Icons><FaTrash/></Icons>
+                              <Icons onClick={()=>this.props.deleteSchedule(v.id)} style={{cursor:'pointer'}}><FaTrash /></Icons>
                             </td>
                           </tr>
                         )
                       })
-                    }                  
+                    }   
+                    <AddSchedule modal={this.state.modal} close={()=>this.setState({modal: false})}/>               
                   <tr>
                     <td colspan={10}>
-                      <span><MdAddCircle size={30}/>Add Schedule</span>
+                      <span onClick={this.toggle} style={{cursor: 'pointer'}}><MdAddCircle size={30}/>Add Schedule</span>
                     </td>
                   </tr>
                   </tbody>
@@ -124,5 +131,5 @@ const mapStateToProps = (state) => {
     Schedule: state.Schedules
   }
 }
-const mapDispatchToProps = {showSchedule}
+const mapDispatchToProps = {showSchedule, deleteSchedule}
 export default connect(mapStateToProps, mapDispatchToProps) (Schedule)

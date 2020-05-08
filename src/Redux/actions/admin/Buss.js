@@ -48,6 +48,20 @@ export const getBus = (page, searchKey, search, sortKey, sort)=> async dispatch 
   }
 }
 
+export const getBusForSchedule = () => async dispatch => {
+  const endPoint = Config.APP_BACKEND.concat('admin/bus/outjoin')
+  try {
+    const res = await axios.get(endPoint)
+    console.log('ini res', res.data)
+    dispatch({
+      type: 'GET_BUS_SCHEDULE',
+      payload: res.data
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const getTotalBus = ()=> async dispatch => {
   const endPoint = Config.APP_BACKEND.concat('admin/total-bus')
   try {

@@ -127,6 +127,7 @@ class Bus extends Component {
   }
 
   render() {
+    console.log(this.props.Bus)
     const page = []
     const disablePage = []
     const totalPage = this.props.Bus.data.pageInfo && this.props.Bus.data.pageInfo.totalPage
@@ -192,7 +193,6 @@ class Bus extends Component {
             
         </Content>
         <AddBus modal={this.state.modal} close={()=>this.setState({modal: false})} />
-        {/* <UpdateBus updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} update={this.createAlert} /> */}
       </>
     )
   }
