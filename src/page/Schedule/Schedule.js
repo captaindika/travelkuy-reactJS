@@ -4,10 +4,10 @@ import {Container, Col, Table, Form,
 import styled from 'styled-components'
 import {MdAddCircle} from 'react-icons/md'
 import {FaPencilAlt,FaTrash} from 'react-icons/fa'
-import Navbar from '../component/Navbar'
+import Navbar from '../../component/Navbar'
 
 import {connect} from 'react-redux'
-import {showSchedule} from '../Redux/actions/admin/Schedule'
+import {showSchedule} from '../../Redux/actions/admin/Schedule'
 
 
 const Label1 = styled(Label)`
