@@ -3,7 +3,7 @@ import {Container, Col, Table, Form,
   FormGroup, Input, Label, Pagination, PaginationItem, PaginationLink} from 'reactstrap'
 import styled from 'styled-components'
 import {MdAddCircle} from 'react-icons/md'
-import {FaPencilAlt, FaTrash, FaSearch, FaSortAmountDown, FaSortAmountUp} from 'react-icons/fa'
+import {FaPencilAlt, FaTrash, FaSortAmountDown, FaSortAmountUp} from 'react-icons/fa'
 import Navbar from '../../component/Navbar'
 import Footer from '../../component/Footer'
 import AddRoute from '../Route/AddRoute'
@@ -141,7 +141,6 @@ class Routes extends Component {
   render() {
     console.log(this.props.Route)
     const page = []
-    const disablePage = []
     const totalPage = this.props.Route.data.pageInfo && this.props.Route.data.pageInfo.totalPage
     for (let index = 0; index < totalPage; index++) {
       page.push(<PaginationItem key={index}> <PaginationLink onClick={this.setPage} href='#'>{index + 1} </PaginationLink></PaginationItem>)

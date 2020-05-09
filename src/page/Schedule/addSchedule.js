@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   Modal, ModalHeader, Label, FormGroup, Input, ModalBody, ModalFooter, Button
 } from 'reactstrap'
-import styled from 'styled-components'
 import {connect} from 'react-redux'
 import {showSchedule, addSchedule} from '../../Redux/actions/admin/Schedule'
 import {showRoutes} from '../../Redux/actions/admin/Route'

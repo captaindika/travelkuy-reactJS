@@ -5,14 +5,8 @@ import {
 import {connect} from 'react-redux'
 import {GetDataAgent} from '../../Redux/actions/admin/Agent'
 import {updateBus, getBus} from '../../Redux/actions/admin/Buss'
-import styled from 'styled-components'
-import {FaPencilAlt} from 'react-icons/fa'
 
-const Icons = styled.span`
-display: inline;
-width: 100px;
-padding: 5px;
-`
+
 
 class UpdateBus extends Component {
   constructor (props) {

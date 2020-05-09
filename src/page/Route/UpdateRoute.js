@@ -4,14 +4,6 @@ import {
 } from 'reactstrap'
 import {connect} from 'react-redux'
 import {UpdateRoutes, showRoutes} from '../../Redux/actions/admin/Route'
-import styled from 'styled-components'
-import {FaPencilAlt} from 'react-icons/fa'
-
-const Icons = styled.span`
-display: inline;
-width: 100px;
-padding: 5px;
-`
 
 class updateRoute extends Component {
   constructor(props){
