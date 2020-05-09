@@ -39,8 +39,28 @@ export const deleteSchedule = (id) => async dispatch => {
         payload: res.data
       })
       alert('schedule deleted')
+    } else {
+      alert('Failed to delete')
     }
   } catch(err) {
-    alert('Failed to delete schedule')
+    alert(err)
+  }
+}
+
+export const updateSchedule = (id, data) => async dispatch => {
+  try {
+    const res = await axios.patch(Config.APP_BACKEND.concat(`admin/schedule/update/${id}`), data)
+    console.log('ini res', res)
+    if (res) {
+      dispatch({
+        type: 'UPDATE_SCHEDULE',
+        payload: res.data
+      })
+      alert('Schedule updated !')
+    } else {
+      alert('Failed to update')
+    }
+  } catch (err) {
+    alert(err)
   }
 }

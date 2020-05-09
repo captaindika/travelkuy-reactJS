@@ -9,6 +9,7 @@ import AddSchedule from '../Schedule/addSchedule'
 import {connect} from 'react-redux'
 import {showSchedule, deleteSchedule} from '../../Redux/actions/admin/Schedule'
 import history from '../../utils/History'
+import UpdateSchedule from './updateSchedule'
 
 
 const Label1 = styled(Label)`
@@ -35,11 +36,18 @@ class Schedule extends Component {
       searchKey: '',
       search: '',
       sortCondition: true,
-      modal: false
+      modal: false,
+      updateModal: false,
+      idSchedule: 0
     }
 
     this.toggle = () => this.setState({modal: !this.state.modal })
-
+    this.updateToggle = (e) => {
+      this.setState({
+        updateModal : !this.state.updateModal,
+        idSchedule: e
+      })
+    }
     this.handleSort = (field) => {
       const sort = this.state.sort ? this.state.sort - 1 : this.state.sort + 1
       console.log(sort)
@@ -104,15 +112,16 @@ class Schedule extends Component {
                             <td>{v.end}</td>
                             <td>{v.bus_seat}</td>
                             <td>
-                              <Icons><FaPencilAlt/></Icons>
+                              <Icons onClick={()=>this.updateToggle(v.id)} style={{cursor:'pointer'}}><FaPencilAlt/></Icons>
                               <Icons onClick={()=>this.props.deleteSchedule(v.id)} style={{cursor:'pointer'}}><FaTrash /></Icons>
                             </td>
                           </tr>
                         )
                       })
                     }   
-                    <AddSchedule modal={this.state.modal} close={()=>this.setState({modal: false})}/>               
-                  <tr>
+                    <AddSchedule modal={this.state.modal} close={()=>this.setState({modal: false})}/>
+                    <UpdateSchedule idSchedule={this.state.idSchedule} updateModal={this.state.updateModal} close={()=>this.setState({updateModal: false})} />              
+                  <tr>  
                     <td colspan={10}>
                       <span onClick={this.toggle} style={{cursor: 'pointer'}}><MdAddCircle size={30}/>Add Schedule</span>
                     </td>

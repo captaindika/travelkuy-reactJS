@@ -72,7 +72,7 @@ class Bus extends Component {
     this.handleSort = (field) => {
       const sort = this.state.sort ? this.state.sort - 1 : this.state.sort + 1
       console.log(sort)
-      this.props.getBus(this.props.Bus.data.pageInfo.page, this.state.searchKey, this.state.search, field, parseInt(sort))
+      this.props.getBus(this.parops.Bus.data.pageInfo.page, this.state.searchKey, this.state.search, field, parseInt(sort))
       this.setState({
         sort: sort,
         sortCondition: !this.state.sortCondition

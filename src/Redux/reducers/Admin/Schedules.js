@@ -23,6 +23,12 @@ export default function Schedules (state = initState, action) {
         loading: false,
         data: action.payload
       }
+    case 'UPDATE_SCHEDULE':
+      return {
+        ...state,
+        loading: false,
+        data: action.payload
+      }
     default :
     return {...state}
   }
